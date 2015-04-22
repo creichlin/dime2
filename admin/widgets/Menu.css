@@ -1,0 +1,36 @@
+.menu {
+  .label {
+    text-decoration: underline black;
+    font-weight: bold;
+  }
+  
+  .label:hover {
+    color: #600;
+    text-decoration: underline #600;
+  }
+  
+  & > .element {
+    display: inline-block;
+    height: 22px;
+  
+    margin-right: 8px;
+    
+
+    & > .menu-item > .elements {
+      position: absolute;
+      display: none;
+      z-index: 1;
+      background-color: rgba(120, 120, 120, 0.8);
+      
+      padding: 0px 4px;
+      
+      .menu-item {
+        height: 22px;
+      }
+    }  
+
+    & > .menu-item:hover > .elements {
+      display: block;
+    }  
+  }
+}

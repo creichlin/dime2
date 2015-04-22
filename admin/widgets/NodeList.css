@@ -1,0 +1,7 @@
+.node-list {
+  &.horizontal {
+    & > .element {
+      display: inline-block;
+    }
+  }
+}

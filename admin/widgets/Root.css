@@ -1,0 +1,74 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
+.root {
+  position: absolute;
+  top: 11px;
+  left: 11px;
+  right: 11px;
+  bottom: 1px;
+  /*
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAIAAACOpGH9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wQHCjsL4RwpRQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAZSURBVAjXY/j//z8TAwMDMZiBgYGBgUj1AHmDBiFuYHcRAAAAAElFTkSuQmCC);
+  */
+
+  .box-element {
+    box-sizing: border-box;
+    padding: 5px;
+    border: solid 1px #999;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #aaa;
+    background-color: rgba(160, 160, 160, 0.3);
+  }  
+  
+  & > .menu-area {
+    height: 34px;
+  }
+  
+  & > .ct {
+    position: absolute;
+    top: 44px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    
+    & > .list {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 360px;
+      bottom: 0px;
+      overflow: auto;
+    }
+    
+    & > .ctr {
+      position: absolute;
+      left: 370px;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      
+      & > .workspace {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 176px;
+        overflow: auto;
+      }
+
+      & > .log {
+        position: absolute;
+        height: 166px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        overflow: auto;
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<web-app metadata-complete="true">
+	<servlet>
+		<servlet-name>RequestHandler</servlet-name>
+		<servlet-class>ch.kerbtier.webb.RequestHandler</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>RequestHandler</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+		<filter-name>RequestFilter</filter-name>
+		<filter-class>ch.kerbtier.webb.RequestFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>RequestFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<listener>
+		<listener-class>ch.kerbtier.webb.ContextListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>ch.kerbtier.webb.SessionListener</listener-class>
+	</listener>
+
+	<context-param>
+		<param-name>livecycles</param-name>
+		<param-value>ch.kerbtier.dime2.Server</param-value>
+	</context-param>
+  
+  <session-config>
+    <cookie-config>
+      <name>D2_SID</name>
+    </cookie-config>
+</session-config>
+</web-app>

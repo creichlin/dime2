@@ -1,0 +1,22 @@
+.file-input {
+  
+  position: relative;
+  
+  & > .selectfile {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    
+    text-align: center;
+    
+    cursor: pointer;
+    
+    &:hover {
+      background-color: rgba(100, 150, 150, 0.3);
+    }
+    
+  }
+  
+}

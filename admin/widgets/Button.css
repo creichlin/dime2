@@ -1,0 +1,39 @@
+.button {
+  text-decoration: underline black;
+  font-weight: bold;
+  
+  & > .icon {
+    display: inline-block;
+    vertical-align: -6px;
+    width: 18px;
+    height: 18px;
+    background-color: white;
+    border: solid 1px #bbb;
+    border-radius: 5px;
+    background-image: url(../icons.png);
+    margin: 0 1px 0 0;
+    
+    &:hover {
+      background-color: #888;
+    }
+    
+    &.edit {
+      background-position: -1px -1px;
+    }
+    &.delete {
+      background-position: -21px -1px;
+    }
+    &.up {
+      background-position: -41px -1px;
+    }
+    &.down {
+      background-position: -61px -1px;
+    }
+  }
+}
+
+.button:hover {
+  color: #600;
+  text-decoration: underline #600;
+}
+
