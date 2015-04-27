@@ -1,0 +1,21 @@
+{{#posts.published}}
+  <article>
+    {{#if image}}
+      {{image image "$1.fit(200x126)"}}
+    {{/if}}
+    <h2>{{title}}</h2>
+    <span class="author">{{format date "short"}} by Onan</span>
+    <p>
+      {{abstract}}..
+      <a href="{{link slug}}">
+        {{#more}}
+          {{more}}
+        {{else}}
+          read more
+        {{/more}}
+      </a>
+    </p>
+    <div class="clear"></div>
+  </article>
+{{/posts.published}}
+

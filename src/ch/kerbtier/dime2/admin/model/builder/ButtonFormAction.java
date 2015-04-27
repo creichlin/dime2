@@ -20,13 +20,20 @@ public class ButtonFormAction implements Runnable {
   @Override
   public void run() {
     if(command == Command.save) {
-      form.save();
+      if(form.isValid()) { 
+        form.save();
+        if(message != null) {
+          MiTemplate mi = new MiTemplate(message, form);
+          ContainerFacade.getAdminRoot().getLog().log(mi.compile());
+        }
+      } else {
+        if(message != null) {
+          MiTemplate mi = new MiTemplate("Cannot save, form has invalid values.", form);
+          ContainerFacade.getAdminRoot().getLog().log(mi.compile());
+        }
+      }
     }
     
-    if(message != null) {
-      MiTemplate mi = new MiTemplate(message, form);
-      ContainerFacade.getAdminRoot().getLog().log(mi.compile());
-    }
 
   }
 

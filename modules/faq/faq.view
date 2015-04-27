@@ -1,0 +1,69 @@
+<views>
+  <menu>
+    <entry>
+      <setView area="list" view="faq.list" model="faq"/>
+      <setView area="workspace" view="blog.empty" model="faq"/>
+      FAQ
+    </entry>
+  </menu>
+
+  <widget name="faq.list">
+    <list>
+      <button>
+        <setView area="workspace" view="faq.edit" model="entries"/>
+        Add question
+      </button>
+      <dataTable>
+        <columns>
+          <label>name</label>
+          <label></label>
+          <label></label>
+        </columns>
+        <rows model="entries">
+          <label>{{question:short}}</label>
+          <button icon="edit">
+            <setView area="workspace" view="faq.edit"/>
+          </button>
+          <button icon="delete" confirm="really delete faq entry?">
+            <model command="delete" message="deleted faq entry"/>
+          </button>
+          <button icon="up">
+            <model command="up"/>
+          </button>
+          <button icon="down">
+            <model command="down"/>
+          </button>
+        </rows>
+      </dataTable>
+      <ruler/>
+      <form>
+        <grid>
+          <label span="12">Slug</label>
+          <slugInput span="12" field="slug"/>
+        </grid>
+        <button>
+          <form command="save"/>
+          Save slug
+        </button>
+      </form>
+    </list>
+  </widget>
+
+  <widget name="faq.edit">
+    <list>
+      <form>
+        <grid>
+          <label span="3">Question</label>
+          <textInput span="9" field="question"/>
+          <label span="3">Answer</label>
+          <textInput span="9" field="answer"/>
+        </grid>
+        <button>
+          <form command="save" message="saved faq entry"/>
+          Save question
+        </button>
+      </form>
+    </list>
+  </widget>
+  
+</views>

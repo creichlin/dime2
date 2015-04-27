@@ -1,0 +1,107 @@
+<views>
+  <menu>
+    <entry>
+      <setView area="list" view="blog.list" model="blog"/>
+      <setView area="workspace" view="blog.empty" model="blog"/>
+      Blog
+      <entry>
+        <setView area="list" view="blog.settings" model="blog"/>
+        <setView area="workspace" view="blog.empty" model="blog"/>
+        Settings
+      </entry>
+    </entry>
+  </menu>
+
+  <widget name="blog.settings">
+    <list>
+      <button>
+        <setView area="workspace" view="blog.default-settings"/>
+        Default settings
+      </button>
+    </list>
+  </widget>
+
+  <widget name="blog.default-settings">
+    <list>
+      <label>Default settings</label>
+      <form>
+        <grid>
+          <label span="3">Title</label>
+          <textInput span="9" field="title"/>
+          <label span="3">Slug</label>
+          <slugInput field="slug" span="3"/>
+        </grid>
+        <button>
+          <form command="save" message="updated blog settings."/>
+          Save blog settings
+        </button>
+      </form>
+    </list>
+  </widget>
+
+  <widget name="blog.list">
+    <list>
+      <button>
+        <setView area="workspace" view="blog.edit" model="posts"/>
+        Add post
+      </button>
+      <dataTable>
+        <columns>
+          <label>name</label>
+          <label>date</label>
+          <label></label>
+          <label></label>
+          <label></label>
+          <label></label>
+        </columns>
+        <rows model="posts">
+          <label>{{title:short}}</label>
+          <label>{{date:short}}</label>
+          <button icon="edit">
+            <setView area="workspace" view="blog.edit"/>
+          </button>
+          <button icon="delete" confirm="really delete post?">
+            <model command="delete" message="deleted blog post."/>
+          </button>
+          <button icon="up">
+            <model command="up"/>
+          </button>
+          <button icon="down">
+            <model command="down"/>
+          </button>
+        </rows>
+      </dataTable>
+    </list>
+  </widget>
+
+
+  <widget name="blog.edit">
+    <list>
+      <form>
+        <grid>
+          <label span="3">Title</label>
+          <textInput span="9" field="title"/>
+          <label span="3">Slug</label>
+          <slugInput field="slug" span="3"/>
+          <label span="3">Date</label>
+          <dateInput field="date" span="3"/>
+          <label span="3">Read more...</label>
+          <textInput span="9" field="more"/>
+          <label span="6">Abstract</label>
+          <label span="6">Image</label>
+          <textArea span="6" lines="4" field="abstract"/>
+          <fileInput span="6" field="image"/>
+          <textArea span="12" lines="12" field="content"/>
+        </grid>
+        <button>
+          <form command="save" message="saved post {{title}}"/>
+          Save post
+        </button>
+      </form>
+    </list>
+  </widget>
+
+  <widget name="blog.empty">
+    <label></label>
+  </widget>
+</views>

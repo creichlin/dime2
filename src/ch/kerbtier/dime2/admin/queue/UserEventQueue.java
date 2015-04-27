@@ -30,6 +30,8 @@ public class UserEventQueue {
       queue.add(new SetNumberEvent(parent.getId(), field, (Float)child));
     } else if(child instanceof Date){
       queue.add(new SetDateEvent(parent.getId(), field, (Date)child));
+    } else if(child instanceof Boolean){
+      queue.add(new SetBooleanEvent(parent.getId(), field, (Boolean)child));
     } else {
       throw new RuntimeException("invalid value for " + parent + " " + field + " :  " + child);
     }

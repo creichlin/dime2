@@ -1,0 +1,31 @@
+.confirm-dialog {
+  position: absolute;
+  background-color: rgba(100, 100, 100, 0.4);
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  
+  & > .window {
+    & > h1 {
+      padding: 8px;
+      padding-bottom: 11px;
+      background-color: #ddd;
+      font-size: bold;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+    }
+    
+    & > .content {
+      padding: 8px;
+      badding-top: 11px;
+    }
+    
+    position: absolute;
+    left: 50%;
+    
+    border: solid 3px #999;
+    background-color: white;
+    border-radius: 22px;
+  }
+}

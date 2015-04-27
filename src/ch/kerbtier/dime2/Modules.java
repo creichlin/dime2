@@ -4,23 +4,24 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 
 import ch.kerbtier.dime2.modules.Module;
+import ch.kerbtier.dime2.modules.ModuleDependencyProvider;
 import ch.kerbtier.dime2.modules.Page;
+import ch.kerbtier.dime2.modules.resolver.Resolver;
 
-public class Modules {
+public class Modules implements Iterable<Module> {
 
-  private List<Module> modules = new ArrayList<>();
+  private Resolver<Module> modules = new Resolver<>(new ModuleDependencyProvider());
   private Map<String, Module> byName = new HashMap<>();
 
   public Modules(Config config) {
     try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(config.getModulesPath())) {
       for (Path path : directoryStream) {
-        Module module = new Module(path);
+        Module module = new Module(this, path);
         modules.add(module);
         byName.put(module.getName(), module);
         System.out.println("loaded module " + module.getName());
@@ -49,5 +50,14 @@ public class Modules {
       }
     }
     return null;
+  }
+
+  @Override
+  public Iterator<Module> iterator() {
+    return modules.iterator();
+  }
+
+  public Module getModule(String name) {
+    return byName.get(name);
   }
 }

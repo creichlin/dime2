@@ -1,0 +1,16 @@
+article.faq {
+  
+  & > p {
+    margin-bottom: 0px;
+
+    &.question {
+      font-style: italic;
+    }
+    
+    &.answer {
+      padding-left: 28px;
+      font-weight: bold;
+    }
+  }
+  
+}

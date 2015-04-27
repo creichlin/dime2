@@ -1,0 +1,13 @@
+blog: {
+  title: string
+  slug: slug
+  posts: [{
+    title: string
+    date: date
+    slug: slug
+    image: blob
+    content: string
+    abstract: string
+    more: string
+  }]
+}

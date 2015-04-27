@@ -10,7 +10,7 @@ public class SaxHandler extends DefaultHandler {
 
   private Ui ui;
 
-  private Stack<ElementNode> current = new Stack<ElementNode>();
+  private Stack<ElementNode> current = new Stack<>();
 
   public SaxHandler(Ui ui) {
     this.ui = ui;

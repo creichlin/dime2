@@ -53,6 +53,14 @@ public class Node {
     }
   }
 
+  public void triggerAllEvents() {
+    triggerOwnEvents();
+
+    for (Node node : getADHSNodes()) {
+      node.triggerAllEvents();
+    }
+  }
+
   void triggerOwnEvents() {
     for (Field field : getADHSFields()) {
       try {
@@ -142,4 +150,6 @@ public class Node {
       throw new RuntimeException(e);
     }
   }
+  
+
 }

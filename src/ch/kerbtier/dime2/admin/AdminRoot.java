@@ -8,7 +8,7 @@ public class AdminRoot {
   private Root root;
   private User user;
   private Log log;
-
+  
   public Root getRoot() {
     return root;
   }
@@ -32,4 +32,5 @@ public class AdminRoot {
   public void setLog(Log log) {
     this.log = log;
   }
+
 }

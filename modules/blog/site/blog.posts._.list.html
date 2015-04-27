@@ -1,0 +1,12 @@
+{{#published}}
+  <article>
+    <h2>{{title}}</h2>
+    <span class="author">{{format date "short"}} by Onan</span>
+    <p>{{abstract}}</p>
+    
+    {{markdown content}}
+    
+  </article>
+{{else}}  
+  <h2>unavailable</h2>
+{{/published}}

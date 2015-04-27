@@ -1,0 +1,6 @@
+pages: [{
+  title: string
+  slug: slug
+  content: string
+}]
+

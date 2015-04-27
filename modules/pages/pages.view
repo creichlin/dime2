@@ -1,0 +1,61 @@
+<views>
+  <menu>
+    <entry>
+      <setView area="list" view="pages.list" model="pages"/>
+      <setView area="workspace" view="blog.empty" model="pages"/>
+      Pages
+    </entry>
+  </menu>
+
+  <widget name="pages.list">
+    <list>
+      <button>
+        <setView area="workspace" view="pages.edit"/>
+        Add post
+      </button>
+      <dataTable>
+        <columns>
+          <label>name</label>
+          <label></label>
+          <label></label>
+          <label></label>
+          <label></label>
+        </columns>
+        <rows>
+          <label>{{title:short}}</label>
+          <button icon="edit">
+            <setView area="workspace" view="pages.edit"/>
+          </button>
+          <button icon="delete" confirm="really delete page?">
+            <model command="delete" message="deleted page"/>
+          </button>
+          <button icon="up">
+            <model command="up"/>
+          </button>
+          <button icon="down">
+            <model command="down"/>
+          </button>
+        </rows>
+      </dataTable>
+    </list>
+  </widget>
+
+  <widget name="pages.edit">
+    <list>
+      <form>
+        <grid>
+          <label span="3">Title</label>
+          <textInput span="9" field="title"/>
+          <label span="3">Slug</label>
+          <slugInput field="slug" span="3"/>
+          <textArea span="12" lines="12" field="content"/>
+        </grid>
+        <button>
+          <form command="save" message="saved page {{title}}"/>
+          Save page
+        </button>
+      </form>
+    </list>
+  </widget>
+
+</views>

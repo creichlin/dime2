@@ -23,6 +23,9 @@ public class Root extends Node {
   @ADHS
   private Menu menu = new Menu();
 
+  @ADHS
+  private Dialog dialog;
+
   public Root() {
     menu.setStyle("horizontal");
     new Builder().buildMenu(menu);
@@ -76,6 +79,14 @@ public class Root extends Node {
   public Node getWorkspace() {
     return workspace;
   }
+  
+  public Dialog getDialog() {
+    return dialog;
+  }
+
+  public void setDialog(Dialog dialog) {
+    this.dialog = dialog;
+  }
 
   public void set(String area, Node newNode) {
     if("workspace".equals(area)) {
@@ -88,4 +99,13 @@ public class Root extends Node {
       throw new RuntimeException("invalid area: " + area);
     }
   }
+
+  @Override
+  public void triggerAllEvents() {
+    // send root / bootstrap event
+    getEventQueue().set(null, "root", this);
+    super.triggerAllEvents();
+  }
+  
+  
 }

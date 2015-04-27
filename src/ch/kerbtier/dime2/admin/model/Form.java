@@ -20,6 +20,9 @@ public class Form extends NodeList {
   private List<FormElement> elements = new ArrayList<>();
   private MappedListeners<String> onChange = new MappedListeners<>();
   protected Map<String, Object> values = new HashMap<>();
+  
+  @ADHS
+  private boolean valid = true;
 
   public Form(HNode subject) {
     this.subject = new HNodeFormEntity(subject);
@@ -118,5 +121,17 @@ public class Form extends NodeList {
       return null;
     }
 
+  }
+
+  public void changeValid(FormElement formElement) {
+    boolean val = true;
+    for(FormElement fe: elements) {
+      val = val && fe.isValid();
+    }
+    this.valid = val;
+  }
+
+  public boolean isValid() {
+    return valid;
   }
 }

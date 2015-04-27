@@ -1,0 +1,41 @@
+<views>
+  <menu>
+    <entry>
+      <setView area="list" view="site.list" model="site"/>
+      <setView area="workspace" view="blog.empty" model="site"/>
+      Site
+    </entry>
+  </menu>
+
+  <widget name="site.list">
+    <list>
+      <button>
+        <setView area="workspace" view="site.edit"/>
+        Site settings
+      </button>
+    </list>
+  </widget>
+
+  <widget name="site.edit">
+    <list>
+      <form>
+        <grid>
+          <label span="3">Title</label>
+          <textInput span="9" field="title"/>
+          <label span="3">Google site verification</label>
+          <textInput span="9" field="googleSiteVerification"/>
+          <label span="3">Analytics ID</label>
+          <textInput span="9" field="analyticsId"/>
+          <label span="3">MS validate</label>
+          <textInput span="9" field="msvalidate"/>
+        </grid>
+        <button>
+          <form command="save" message="saved site settings"/>
+          Save settings
+        </button>
+      </form>
+    </list>
+  </widget>
+
+
+</views>

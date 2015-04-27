@@ -1,10 +1,12 @@
 package ch.kerbtier.dime2.admin.model.builder;
 
+import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.util.Stack;
 
 import ch.kerbtier.dime2.admin.model.Button;
+import ch.kerbtier.dime2.admin.model.ConfirmDialog;
 import ch.kerbtier.dime2.admin.model.DateInput;
 import ch.kerbtier.dime2.admin.model.FileInput;
 import ch.kerbtier.dime2.admin.model.Form;
@@ -24,6 +26,7 @@ import ch.kerbtier.dime2.mi.MiTemplate;
 import ch.kerbtier.helene.HList;
 import ch.kerbtier.helene.HNode;
 import ch.kerbtier.helene.HObject;
+import ch.kerbtier.helene.events.Listeners;
 import static ch.kerbtier.dime2.ContainerFacade.*;
 
 public class Builder {
@@ -100,11 +103,41 @@ public class Builder {
     return label;
   }
 
-  public Node button(ElementNode en, final HNode node) {
+  public Node button(final ElementNode en, final HNode node) {
     Button button = new Button(en.getText().trim(), en.getAttribute("icon"));
+    
+    final Listeners buttonActions = new Listeners();
+    
+    if(en.getAttribute("confirm") != null) {
+      button.getClick().onEvent(new Runnable() {
+        @Override
+        public void run() {
+          ConfirmDialog dialog = new ConfirmDialog(en.getAttribute("confirm"));
+          dialog.getConfirm().onEvent(new Runnable() {
+            @Override
+            public void run() {
+              buttonActions.trigger();
+            }
+          });
+          
+          getAdminRoot().getRoot().setDialog(dialog);
+        }
+        
+      });
+      
+    } else {
+      button.getClick().onEvent(new Runnable() {
+        @Override
+        public void run() {
+          buttonActions.trigger();
+        }
+        
+      });
+    }
+    
 
     for (final ElementNode setView : en.getElements("setView")) {
-      button.getClick().onEvent(new Runnable() {
+      buttonActions.onEvent(new Runnable() {
         @Override
         public void run() {
           String view = setView.getAttribute("view");
@@ -115,12 +148,12 @@ public class Builder {
     }
 
     for (ElementNode a : en.getElements("form")) {
-      button.getClick().onEvent(
+      buttonActions.onEvent(
           new ButtonFormAction(forms.peek(), a.getAttribute("command"), a.getAttribute("message")));
     }
 
     for (ElementNode a : en.getElements("model")) {
-      button.getClick().onEvent(
+      buttonActions.onEvent(
           new ButtonModelAction(getModel(en, node), a.getAttribute("command"), a.getAttribute("message")));
     }
 

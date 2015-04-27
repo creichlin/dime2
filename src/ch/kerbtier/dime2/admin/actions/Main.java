@@ -19,9 +19,9 @@ public class Main {
   public void authenticate() {
     String username = getHttpRequest().getParameter("username");
     String password = getHttpRequest().getParameter("password");
-    
+
     try {
-      User user = getAuthentication().get(username,  password);
+      User user = getAuthentication().get(username, password);
       getAdminRoot().setUser(user);
     } catch (InvalidCredentials e) {
       Logger.getLogger(Main.class.getName()).info("invalid login attempt");
@@ -32,7 +32,7 @@ public class Main {
       throw new RuntimeException(e);
     }
   }
-  
+
   @Action(pattern = "admin/", method = HTTPMethod.GET)
   public void main() {
     try {
@@ -40,21 +40,25 @@ public class Main {
 
       if (getAdminRoot().getUser() == null) {
         pw.print("<html><head><title>login</title></head></body>");
-        
+
         pw.print("<form method=\"post\">");
-        
+
         pw.print("<input type=\"text\" name=\"username\"/></br>");
         pw.print("<input type=\"password\" name=\"password\"/></br>");
-        
+
         pw.print("<input type=\"submit\"/>");
-        
+
         pw.print("</form>");
-        
+
         pw.print("</body></html>");
       } else {
-        getAdminRoot().setRoot(new Root());
-        getAdminRoot().setLog(new Log());
-        getAdminRoot().getRoot().set("log", getAdminRoot().getLog());
+        if (getAdminRoot().getRoot() == null) {
+          getAdminRoot().setRoot(new Root());
+          getAdminRoot().setLog(new Log());
+          getAdminRoot().getRoot().set("log", getAdminRoot().getLog());
+        } else {
+          getAdminRoot().getRoot().triggerAllEvents();
+        }
 
         pw.print("<html><head>");
 
@@ -66,7 +70,7 @@ public class Main {
           pw.print("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + css + ".css\">");
         }
 
-        for (String type : "NodeList,Root,Button,Label,Menu,MenuItem,Table,Grid,TextInput,TextArea,DateInput,Form,SlugInput,FileInput,Ruler,Log"
+        for (String type : "NodeList,Root,Button,Label,Menu,MenuItem,Table,Grid,TextInput,TextArea,DateInput,Form,SlugInput,FileInput,Ruler,Log,ConfirmDialog"
             .split(",")) {
           pw.print("<script type=\"text/javascript\" src=\"widgets/" + type + ".js\"></script>");
           if (Files.exists(getContextInfo().getLocalPath().resolve("admin/widgets/" + type + ".css"))) {

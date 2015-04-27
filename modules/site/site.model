@@ -1,0 +1,7 @@
+
+site: {
+  title: string
+  googleSiteVerification: string
+  analyticsId: string
+  msvalidate: string
+}

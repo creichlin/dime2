@@ -5,6 +5,7 @@ d2.views.register('SlugInput', function() {
     
     
     this.$input.on('change', _.bind(this.change, this));
+    this.$input.on('keyup', _.debounce(_.bind(this.change, this), 500));
   };
 
   this.change = function(e, data) {
@@ -13,5 +14,9 @@ d2.views.register('SlugInput', function() {
   
   this.setValue = function(value) {
     this.$input.val(value);
+  }
+  
+  this.setValid = function(value) {
+    this.$.toggleClass("invalid", !value);
   }
 });

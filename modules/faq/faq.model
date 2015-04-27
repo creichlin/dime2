@@ -1,0 +1,7 @@
+faq: {
+  slug: slug
+  entries: [{
+    question: string
+    answer: string
+  }]
+}

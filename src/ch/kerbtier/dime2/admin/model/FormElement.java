@@ -5,6 +5,9 @@ public abstract class FormElement extends Node {
 
   private String field;
   private Form form;
+  
+  @ADHS
+  private boolean valid = true;
 
   public FormElement(String field) {
     this.field = field;
@@ -24,4 +27,14 @@ public abstract class FormElement extends Node {
     this.form = form;
   }
 
+  public boolean isValid() {
+    return valid;
+  }
+
+  public void setValid(boolean valid) {
+    if(this.valid != valid) {
+      this.valid = valid;
+      form.changeValid(this);
+    }
+  }
 }

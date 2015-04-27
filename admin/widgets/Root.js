@@ -6,6 +6,7 @@ d2.views.register('Root', function() {
     this.$list = $('<div class="list box-element"></div>');
     this.$workspace = $('<div class="workspace box-element"></div>');
     this.$log = $('<div class="log box-element"></div>');
+    this.$dialog = $('<div class="modal-dialog"></div>');
     
     var $ct = $('<div class="ct"></div>');
     var $ctr = $('<div class="ctr"></div>');
@@ -16,6 +17,7 @@ d2.views.register('Root', function() {
     $("body").append(this.$);
     this.$.append(this.$menu);
     this.$.append($ct);
+    this.$.append(this.$dialog);
     
     this.resize();
     
@@ -48,6 +50,13 @@ d2.views.register('Root', function() {
   this.setMenu = function(menu) {
     this.$menu.empty();
     this.$menu.append(menu.$);
+  }
+
+  this.setDialog = function(dialog) {
+    this.$dialog.empty();
+    if(dialog) {
+      this.$dialog.append(dialog.$);
+    }
   }
 });
 

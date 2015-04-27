@@ -9,4 +9,10 @@
     border-right: 1px solid #b0b0b0;
     background-image: url(input-bg.png);
   }
+  
+  &.invalid {
+    input {
+      background-image: url(input-bg-invalid.png);
+    }    
+  }
 }
