@@ -12,7 +12,10 @@ public class MarkdownHelper implements Helper<String>{
 
   @Override
   public CharSequence apply(String source, Options arg) throws IOException {
+    if(source != null) {
     return  new Handlebars.SafeString(new PegDownProcessor().markdownToHtml(source));
+    }
+    return new Handlebars.SafeString("");
   }
 
 }

@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
@@ -44,8 +43,21 @@ public class Server implements Livecycles {
   public static ServerRunner sr;
 
   public static void main(String[] args) throws UnknownHostException {
+    
+    String name = "dime2";
+    int port = 8004;
+    
+    if(args.length > 0) {
+      name = args[0];
+    }
+    if(args.length > 1) {
+      port = Integer.parseInt(args[1]);
+    }
+    
+    
+    
     try {
-      URLConnection con = new URL("http://localhost:8004/exit").openConnection();
+      URLConnection con = new URL("http://localhost:" + port + "/exit").openConnection();
       con.getInputStream();
 
     } catch (ConnectException e) {
@@ -56,7 +68,7 @@ public class Server implements Livecycles {
       e.printStackTrace();
     }
 
-    sr = new ServerRunner("dime2", "ch.kerbtier.dime2.Server", "0.0.0.0", 8004);
+    sr = new ServerRunner(name, "ch.kerbtier.dime2.Server", "0.0.0.0", port);
     sr.start();
   }
 
@@ -170,6 +182,7 @@ public class Server implements Livecycles {
   @Override
   public void stopContext(DefaultPicoContainer pc) {
     pc.getComponent(Models.class).writeData();
+    pc.getComponent(Models.class).close();
     System.out.println("shutdown");
   }
 

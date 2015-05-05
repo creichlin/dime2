@@ -12,33 +12,16 @@ import org.apache.commons.io.FileUtils;
 
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Template;
-import com.google.common.hash.Hasher;
-import com.google.common.hash.Hashing;
-import com.google.common.io.BaseEncoding;
 
 import static ch.kerbtier.dime2.ContainerFacade.*;
 import ch.kerbtier.dime2.modules.Page;
 import ch.kerbtier.helene.HNode;
 import ch.kerbtier.webb.cssopti.CssOpti;
-import ch.kerbtier.weproc.FileSource;
-import ch.kerbtier.weproc.StringSource;
-import ch.kerbtier.weproc.css.CSSCompressor;
-import ch.kerbtier.weproc.css.LessCSS;
-import ch.kerbtier.weproc.css.LessCssPathResolver;
-import ch.kerbtier.weproc.css.URLHashProcessor;
-import ch.kerbtier.weproc.css.URLProcessor;
-import ch.kerbtier.weproc.css.URLRelocateProcessor;
-import ch.kerbtier.weproc.css.URLShortenProcessor;
-import ch.kerbtier.weproc.tools.HashShortener;
-import ch.kerbtier.weproc.urlmodifiers.URLHasher;
-import ch.kerbtier.weproc.urlmodifiers.URLShortener;
 
 public class Process {
 
   private static ThreadLocal<Process> local = new ThreadLocal<>();
   
-  private static HashShortener minifizer = new HashShortener();
-
   private Page page;
   private HNode model;
   private SiteRenderer sr;
@@ -106,12 +89,23 @@ public class Process {
     return sr.compile(page_.getContent());
   }
 
+  /**
+   * gets the currently processed pages folder
+   * @return
+   */
   public Path getPath() {
-    return currentPage.getPath();
+    return currentPage.getPath().getParent();
+  }
+
+  /**
+   * gets the currently processed pages extension
+   * @return
+   */
+  public String getExtension() {
+    return com.google.common.io.Files.getFileExtension(currentPage.getPath().toString());
   }
 
   public void addCss(String path) {
     css.add(path);
   }
-
 }

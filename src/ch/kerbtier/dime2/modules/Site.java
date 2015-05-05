@@ -24,9 +24,9 @@ public class Site {
     return new Page(this, path.resolve("index.html"));
   }
   
-  public Page getPage(String model, String style) {
-    if(Files.exists(path.resolve(model + "." + style + ".html"))) {
-      return new Page(this, path.resolve(model + "." + style + ".html"));
+  public Page getPage(String model) {
+    if(Files.exists(path.resolve(model))) {
+      return new Page(this, path.resolve(model));
     }
     return null;
   }

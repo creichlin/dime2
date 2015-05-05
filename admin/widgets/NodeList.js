@@ -10,6 +10,8 @@ d2.views.register('NodeList', function() {
       this.$.append($sn);
     }
     $sn.empty();
-    $sn.append(child.$);
+    if(child) {
+      $sn.append(child.$);
+    }
   }
 });

@@ -12,6 +12,7 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 
 import ch.kerbtier.dime2.Modules;
+import ch.kerbtier.dime2.modules.ModuleInfo.Mapping;
 
 public class Module {
   private Path folder;
@@ -94,6 +95,10 @@ public class Module {
       throw new RuntimeException(e);
     }
     return result;
+  }
+
+  public Mapping getMapping(String slug) {
+    return moduleInfo.getMappings().get(slug);
   }
 
 }

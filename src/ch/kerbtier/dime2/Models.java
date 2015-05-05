@@ -47,4 +47,8 @@ public class Models {
   public Path writeData() {
     return store.writeBackupTo(config.getBackupPath());
   }
+  
+  public void close() {
+    store.getDb().destroy();
+  }
 }

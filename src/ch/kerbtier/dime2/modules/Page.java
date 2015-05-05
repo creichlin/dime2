@@ -43,7 +43,11 @@ public class Page {
     return content;
   }
 
+  /**
+   * returns this pages files path
+   * @return
+   */
   public Path getPath() {
-    return file.getParent();
+    return file;
   }
 }

@@ -11,6 +11,7 @@ import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
+import com.google.common.io.Files;
 
 public class RenderHelper implements Helper<HObject> {
   
@@ -26,9 +27,11 @@ public class RenderHelper implements Helper<HObject> {
     }
     
     String style = options.param(0) == null ? "default" : (String)options.param(0);
-    Page page = getModules().getPage(model.getName(), style);
+    String ext = p.getExtension();
+    
+    Page page = getModules().getPage(model.getName() + "." + style + "." + ext);
     if (page == null) {
-      throw new RuntimeException("found no template for " + model.getName() + " " + style);
+      throw new RuntimeException("found no template for " + model.getName() + "." + style + "." + ext);
     }
     try {
       Context context = Context.newBuilder(model).resolver(HNodeResolver.INSTANCE).build();

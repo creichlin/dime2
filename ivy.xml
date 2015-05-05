@@ -21,7 +21,7 @@
     <dependency conf="devel->default;dist->default" org="ch.kerbtier" name="helene" rev="latest.integration" changing="true"/>
     <dependency conf="devel->default;dist->container" org="ch.kerbtier" name="webb" rev="latest.integration" changing="true"/>
 
-    <dependency conf="dist->default"  org="org.aspectj" name="aspectjrt" rev="1.8.5"/>
+    <dependency conf="devel->default;dist->default"  org="org.aspectj" name="aspectjrt" rev="1.8.5"/>
 
     <dependency conf="build->default" org="org.aspectj" name="aspectjweaver" rev="1.8.5"/>
     <dependency conf="build->default" org="org.aspectj" name="aspectjtools" rev="1.8.5"/>

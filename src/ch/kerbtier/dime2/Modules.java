@@ -10,6 +10,7 @@ import java.util.Map;
 
 import ch.kerbtier.dime2.modules.Module;
 import ch.kerbtier.dime2.modules.ModuleDependencyProvider;
+import ch.kerbtier.dime2.modules.ModuleInfo.Mapping;
 import ch.kerbtier.dime2.modules.Page;
 import ch.kerbtier.dime2.modules.resolver.Resolver;
 
@@ -31,10 +32,10 @@ public class Modules implements Iterable<Module> {
     }
   }
 
-  public Page getPage(String name, String style) {
+  public Page getPage(String name) {
     for(Module m: modules) {
       if(m.hasSite()) {
-        Page p = m.getSite().getPage(name, style);
+        Page p = m.getSite().getPage(name);
         if(p != null) {
           return p;
         }
@@ -43,6 +44,7 @@ public class Modules implements Iterable<Module> {
     return null;
   }
   
+  // TODO: getPage should be used instead. does the same
   public Page getRoot() {
     for(Module m: modules) {
       if(m.hasSite() && m.getSite().hasRoot()) {
@@ -59,5 +61,16 @@ public class Modules implements Iterable<Module> {
 
   public Module getModule(String name) {
     return byName.get(name);
+  }
+
+  public Mapping getMapping(String slug) {
+    Mapping mapping = null;
+    for(Module m: modules) {
+      Mapping mm = m.getMapping(slug);
+      if(mm != null) {
+        mapping = mm;
+      }
+    }
+    return mapping;
   }
 }

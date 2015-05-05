@@ -21,6 +21,10 @@ d2.views.register = function(name, obj) {
     this.$.addClass('col');
     this.$.addClass('span_' + size + "_of_12");
   }
+
+  obj.prototype.setStyle = function(style) {
+    this.$.addClass(style);
+  }
 }
 
 
@@ -60,16 +64,20 @@ $(function() {
         }
       } else {
         var parent = d2.views.instances[e.id];
-        if(e.field.substr(0, 1) == '#') {
-          if(parent.setElement) {
-            parent.setElement(parseInt(e.field.substr(1)), e.value);
+        if(parent) {
+          if(e.field.substr(0, 1) == '#') {
+            if(parent.setElement) {
+              parent.setElement(parseInt(e.field.substr(1)), e.value);
+            } else {
+              console.warn(parent.type, 'has no setElement for field', e.value);
+            }
+          } else if(parent[seter]) {
+            parent[seter].call(parent, e.value);
           } else {
-            console.warn(parent.type, 'has no setElement for field', e.value);
+            console.warn(parent.type, 'has no setter for field', e.field, e.value);
           }
-        } else if(parent[seter]) {
-          parent[seter].call(parent, e.value);
         } else {
-          console.warn(parent.type, 'has no setter for field', e.field, e.value);
+          console.warn("no parent for event ", e);
         }
       }
     }

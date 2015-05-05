@@ -1,6 +1,5 @@
 package ch.kerbtier.dime2.admin.model.builder;
 
-import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.util.Stack;
@@ -56,6 +55,10 @@ public class Builder {
         }
       }
 
+      if (en.getAttribute("style") != null) {
+        created.setStyle(en.getAttribute("style"));
+      }
+
       return created;
     } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
         | SecurityException e) {
@@ -105,10 +108,10 @@ public class Builder {
 
   public Node button(final ElementNode en, final HNode node) {
     Button button = new Button(en.getText().trim(), en.getAttribute("icon"));
-    
+
     final Listeners buttonActions = new Listeners();
-    
-    if(en.getAttribute("confirm") != null) {
+
+    if (en.getAttribute("confirm") != null) {
       button.getClick().onEvent(new Runnable() {
         @Override
         public void run() {
@@ -119,22 +122,21 @@ public class Builder {
               buttonActions.trigger();
             }
           });
-          
+
           getAdminRoot().getRoot().setDialog(dialog);
         }
-        
+
       });
-      
+
     } else {
       button.getClick().onEvent(new Runnable() {
         @Override
         public void run() {
           buttonActions.trigger();
         }
-        
+
       });
     }
-    
 
     for (final ElementNode setView : en.getElements("setView")) {
       buttonActions.onEvent(new Runnable() {
@@ -148,13 +150,12 @@ public class Builder {
     }
 
     for (ElementNode a : en.getElements("form")) {
-      buttonActions.onEvent(
-          new ButtonFormAction(forms.peek(), a.getAttribute("command"), a.getAttribute("message")));
+      buttonActions.onEvent(new ButtonFormAction(forms.peek(), a.getAttribute("command"), a.getAttribute("message")));
     }
 
     for (ElementNode a : en.getElements("model")) {
-      buttonActions.onEvent(
-          new ButtonModelAction(getModel(en, node), a.getAttribute("command"), a.getAttribute("message")));
+      buttonActions.onEvent(new ButtonModelAction(getModel(en, node), a.getAttribute("command"), a
+          .getAttribute("message")));
     }
 
     return button;
@@ -165,6 +166,32 @@ public class Builder {
     for (ElementNode uin : en.getElements()) {
       list.add(build(uin, node));
     }
+    return list;
+  }
+
+  public Node each(final ElementNode en, HNode node) {
+    final NodeList list = new NodeList();
+
+    final HList<HObject> modelList = (HList<HObject>) node;
+
+    for (HObject rowNode : modelList) {
+      for (ElementNode se : en.getElements()) {
+        list.add(build(se, rowNode));
+      }
+    }
+
+    modelList.onChange(new Runnable() {
+      @Override
+      public void run() {
+        list.clear();
+        for (HObject rowNode : modelList) {
+          for (ElementNode se : en.getElements()) {
+            list.add(build(se, rowNode));
+          }
+        }
+      }
+    }).keepFor(list);
+
     return list;
   }
 
