@@ -5,8 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import ch.kerbtier.helene.HObject;
-import ch.kerbtier.helene.ModifiableNode;
+import ch.kerbtier.dime2.admin.model.form.FormEntity;
 
 public class DateInput extends FormElement {
   
@@ -38,6 +37,6 @@ public class DateInput extends FormElement {
 
   @Override
   public void initValue(FormEntity subject) {
-    value = subject.getDate(getField());
+    value = (Date)subject.get(getField());
   }
 }

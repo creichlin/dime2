@@ -1,5 +1,7 @@
 package ch.kerbtier.dime2.admin.model;
 
+import ch.kerbtier.dime2.admin.model.form.FormEntity;
+
 
 public abstract class FormElement extends Node {
 

@@ -19,6 +19,7 @@ public class SiteRenderer {
     this.development = development;
     handlebars.registerHelper("render", new RenderHelper());
     handlebars.registerHelper("css", new CssHelper());
+    handlebars.registerHelper("js", new JsHelper());
     handlebars.registerHelper("format", new FormatHelper());
     handlebars.registerHelper("link", new LinkHelper());
     handlebars.registerHelper("markdown", new MarkdownHelper());

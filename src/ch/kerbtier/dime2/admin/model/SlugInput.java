@@ -1,6 +1,7 @@
 package ch.kerbtier.dime2.admin.model;
 
 import ch.kerbtier.dime2.ContainerFacade;
+import ch.kerbtier.dime2.admin.model.form.FormEntity;
 import ch.kerbtier.helene.HSlug;
 
 public class SlugInput extends FormElement {
@@ -31,7 +32,7 @@ public class SlugInput extends FormElement {
 
   @Override
   public void initValue(FormEntity subject) {
-    HSlug slug = subject.getSlug(getField());
+    HSlug slug = (HSlug)subject.get(getField());
     if(slug != null) {
       value = slug.getValue();
     } else {

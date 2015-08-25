@@ -9,5 +9,12 @@ blog: {
     content: string
     abstract: string
     more: string
+    images: [{
+      image: blob
+      description: string
+      operations: [{
+        command: string
+      }]
+    }]
   }]
 }

@@ -2,19 +2,19 @@ package ch.kerbtier.dime2.admin.model.builder;
 
 import static ch.kerbtier.dime2.ContainerFacade.*;
 
-import java.util.Date;
+import java.util.List;
 
 import ch.kerbtier.dime2.admin.model.Button;
 import ch.kerbtier.dime2.admin.model.Form;
-import ch.kerbtier.dime2.admin.model.FormEntity;
 import ch.kerbtier.dime2.admin.model.Grid;
 import ch.kerbtier.dime2.admin.model.Label;
 import ch.kerbtier.dime2.admin.model.NodeList;
 import ch.kerbtier.dime2.admin.model.Ruler;
 import ch.kerbtier.dime2.admin.model.Table;
 import ch.kerbtier.dime2.admin.model.TextInput;
+import ch.kerbtier.dime2.admin.model.form.FormEntity;
 import ch.kerbtier.dime2.auth.User;
-import ch.kerbtier.helene.HSlug;
+import ch.kerbtier.helene.events.MappedListeners;
 
 public class UserAdmin {
 
@@ -78,7 +78,7 @@ public class UserAdmin {
     form.add(l1);
     
     Button save = new Button("Save user");
-    save.getClick().onEvent(new ButtonFormAction(form, "save", "saved user {{username}}"));
+    save.getClick().onEvent(new ButtonFormAction(form, "save", "saved user {{username}}", null));
     form.add(save);
     nl.add(form);
     
@@ -90,48 +90,66 @@ public class UserAdmin {
     private User user;
     
     private String lastPassword = "";
+    
+    private String password = null;
+    private String username = null;
+    
+    private MappedListeners<String> onChange = new MappedListeners<>();
 
     public UserAdminEntitySubject(User user) {
       this.user = user;
     }
 
     @Override
-    public void commit(Form form) {
+    public void commit() {
       if(user == null) {
         // create user, other form is needed...
         // showEdit();
       } else {
-        Object pw = form.get("password");
-        if(pw instanceof String && !((String) pw).trim().matches("\\**") && !pw.equals(lastPassword)) {
-          user.setPassword((String)pw);
-          this.lastPassword = (String)pw;
+        if(password instanceof String && !((String) password).trim().matches("\\**") && !password.equals(lastPassword)) {
+          user.setPassword((String)password);
+          this.lastPassword = (String)password;
         }
       }
     }
 
     @Override
-    public Date getDate(String field) {
-      return null;
-    }
-
-    @Override
-    public HSlug getSlug(String field) {
-      return null;
-    }
-
-    @Override
-    public String getString(String field) {
+    public String get(String field) {
       if(field.equals("password")) {
         return "********";
       } else if(field.equals("username")) {
-        return user.getUsername();
+        return username != null ? username: user.getUsername();
       }
       return null;
     }
 
     @Override
-    public Object get(String field) {
-      return getString(field);
+    public List<FormEntity> getObjectList(String field) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void addObjectTo(String list) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void set(String field, Object value) {
+      if(field.equals("password")) {
+        password = (String)value;
+      } else if(field.equals("username")) {
+        username = (String)value;
+      }
+    }
+
+    @Override
+    public MappedListeners<String> getChange() {
+      return onChange;
+    }
+
+    @Override
+    public void delete() {
+      throw new UnsupportedOperationException();
     }
   }
 }

@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import org.parboiled.common.Base64;
 
+import ch.kerbtier.dime2.admin.model.form.FormEntity;
 import ch.kerbtier.helene.HBlob;
 
 public class FileInput extends FormElement {

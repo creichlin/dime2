@@ -20,6 +20,7 @@ public class Module {
   private Modules parent;
   private String description;
   private ModuleInfo moduleInfo;
+  private ModuleJar jar = null;
 
   public Module(Modules parent, Path folder) {
     this.parent = parent;
@@ -40,6 +41,14 @@ public class Module {
     }
 
     moduleInfo = new ModuleInfo(description);
+    
+    
+    if(Files.exists(folder.resolve("module.jar"))) {
+      jar = new ModuleJar(folder.resolve("module.jar"), this);
+      jar.init();
+    }
+    
+    
   }
 
   public Path getFolder() {
@@ -99,6 +108,10 @@ public class Module {
 
   public Mapping getMapping(String slug) {
     return moduleInfo.getMappings().get(slug);
+  }
+
+  public ModuleInfo getInfo() {
+    return moduleInfo;
   }
 
 }

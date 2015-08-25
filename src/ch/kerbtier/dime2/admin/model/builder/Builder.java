@@ -3,6 +3,7 @@ package ch.kerbtier.dime2.admin.model.builder;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.util.Stack;
+import java.util.logging.Logger;
 
 import ch.kerbtier.dime2.admin.model.Button;
 import ch.kerbtier.dime2.admin.model.ConfirmDialog;
@@ -18,6 +19,8 @@ import ch.kerbtier.dime2.admin.model.Ruler;
 import ch.kerbtier.dime2.admin.model.SlugInput;
 import ch.kerbtier.dime2.admin.model.Table;
 import ch.kerbtier.dime2.admin.model.Table.Row;
+import ch.kerbtier.dime2.admin.model.form.FormEntity;
+import ch.kerbtier.dime2.admin.model.form.HNodeFormEntity;
 import ch.kerbtier.dime2.admin.model.TextArea;
 import ch.kerbtier.dime2.admin.model.TextInput;
 import ch.kerbtier.dime2.admin.ui.ElementNode;
@@ -29,6 +32,8 @@ import ch.kerbtier.helene.events.Listeners;
 import static ch.kerbtier.dime2.ContainerFacade.*;
 
 public class Builder {
+  
+  private Logger logger = Logger.getLogger(Builder.class.getCanonicalName());
 
   Stack<Form> forms = new Stack<>();
 
@@ -60,8 +65,13 @@ public class Builder {
       }
 
       return created;
-    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-        | SecurityException e) {
+    } catch (InvocationTargetException e) {
+      if (e.getCause() instanceof RuntimeException) {
+        throw (RuntimeException) e.getCause();
+      } else {
+        throw new RuntimeException(e.getCause());
+      }
+    } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException e) {
       throw new RuntimeException(e);
     }
   }
@@ -150,7 +160,8 @@ public class Builder {
     }
 
     for (ElementNode a : en.getElements("form")) {
-      buttonActions.onEvent(new ButtonFormAction(forms.peek(), a.getAttribute("command"), a.getAttribute("message")));
+      buttonActions.onEvent(new ButtonFormAction(forms.peek(), a.getAttribute("command"), a.getAttribute("message"), a
+          .getAttribute("list")));
     }
 
     for (ElementNode a : en.getElements("model")) {
@@ -170,6 +181,10 @@ public class Builder {
   }
 
   public Node each(final ElementNode en, HNode node) {
+    if (en.getAttribute("form") != null) {
+      return eachForm(en, node);
+    }
+
     final NodeList list = new NodeList();
 
     final HList<HObject> modelList = (HList<HObject>) node;
@@ -192,6 +207,42 @@ public class Builder {
       }
     }).keepFor(list);
 
+    return list;
+  }
+
+  private Node eachForm(final ElementNode en, final HNode node) {
+    final NodeList list = new NodeList();
+    final String formList = en.getAttribute("form");
+    final Form f = forms.peek();
+
+    final Runnable work = new Runnable() {
+      @Override
+      public void run() {
+        System.out.println("parent form for " + en.getAttribute("form") + " => " + f.getBackendData());
+        list.clear();
+
+        try {
+          for (FormEntity fe : f.getObjectList(formList)) {
+            Form form = new Form(fe);
+            forms.push(form);
+            list.add(form);
+            for (ElementNode uin : en.getElements()) {
+              form.add(build(uin, node));
+            }
+            forms.pop();
+          }
+        } catch (UnsupportedOperationException e) {
+          // TODO, add possibility to add new List element to not yet existing
+          // list
+          logger.warning("possibility to add new List element to not yet existing list is not implememnted");
+        }
+
+      }
+
+    };
+
+    f.getChange().on(formList, work);
+    work.run();
     return list;
   }
 
@@ -260,7 +311,7 @@ public class Builder {
   }
 
   public Node form(ElementNode en, HNode node) {
-    Form form = new Form(node);
+    Form form = new Form(new HNodeFormEntity(null, node));
     forms.push(form);
 
     for (ElementNode uin : en.getElements()) {

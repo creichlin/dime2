@@ -1,5 +1,7 @@
 package ch.kerbtier.dime2.admin.model;
 
+import ch.kerbtier.dime2.admin.model.form.FormEntity;
+
 public class TextInput extends FormElement {
 
   @ADHS
@@ -20,6 +22,6 @@ public class TextInput extends FormElement {
 
   @Override
   public void initValue(FormEntity subject) {
-    value = subject.getString(getField());
+    value = (String)subject.get(getField());
   }
 }

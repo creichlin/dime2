@@ -92,7 +92,28 @@
           <textArea span="6" lines="4" field="abstract"/>
           <fileInput span="6" field="image"/>
           <textArea span="12" lines="12" field="content"/>
+          
         </grid>
+
+        <each form="images">
+          <grid>
+            <fileInput span="5" field="image"/>
+            <textArea span="6" lines="2" field="description"/>
+            <list>
+              <button icon="delete">
+                <form command="delete"/>
+              </button>
+              <button icon="up"></button>
+              <button icon="down"></button>
+            </list>
+          </grid>
+        </each>
+
+        <button>
+          <form command="add" list="images"/>
+          Add image
+        </button>
+        
         <button>
           <form command="save" message="saved post {{title}}"/>
           Save post

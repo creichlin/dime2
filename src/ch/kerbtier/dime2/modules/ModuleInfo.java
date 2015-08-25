@@ -15,12 +15,14 @@ public class ModuleInfo {
 
   private List<String> dependencies = new ArrayList<>();
   private Map<String, Mapping> mappings = new HashMap<>();
+  private List<String> initClasses = new ArrayList<>();
 
   public ModuleInfo(String description) {
     this.description = description;
 
     collectDependencies();
     collectMappings();
+    collectInitClasses();
 
     System.out.println(infos());
   }
@@ -46,6 +48,21 @@ public class ModuleInfo {
           if (!dependencies.contains(mod)) {
             dependencies.add(mod);
           }
+        }
+      }
+    }
+  }
+  
+  private void collectInitClasses() {
+    Pattern p = Pattern.compile("has init class(?:es)? ([a-zA-Z0-9.]+)(?:, ([a-zA-Z0-9.]+))*(?: and ([a-zA-Z0-9.]+))?");
+
+    Matcher m = p.matcher(description);
+
+    while (m.find()) {
+      for (int cnt = 0; cnt < m.groupCount(); cnt++) {
+        String ic = m.group(cnt + 1);
+        if(ic != null) {
+          initClasses.add(ic);
         }
       }
     }
@@ -98,6 +115,10 @@ public class ModuleInfo {
     }
     
     
+  }
+
+  public List<String> getInitClasses() {
+    return initClasses;
   }
 }
 

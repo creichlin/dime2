@@ -1,10 +1,8 @@
 package ch.kerbtier.dime2.site.renderer;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +28,7 @@ public class Process {
   private Page currentPage;
   
   private List<String> css = new ArrayList<>();
+  private List<String> js = new ArrayList<>();
 
   public Process(SiteRenderer sr, Page page, HNode model) {
     this.sr = sr;
@@ -52,6 +51,9 @@ public class Process {
         for(String cssf: css) {
           cssc += "<link rel=\"stylesheet\" href=\"/modules/" + cssf + "\">\n";
         }
+        for(String jsf: js) {
+          cssc += "<script src=\"/modules/" + jsf + "\"></script>\n";
+        }
       } else {
         
         CssOpti opti = new CssOpti(getConfig().getImageCache());
@@ -68,6 +70,10 @@ public class Process {
         }
         
         cssc = "<link rel=\"stylesheet\" href=\"/ic/" + key + "\">\n";
+
+        for(String jsf: js) {
+          cssc += "<script src=\"/modules/" + jsf + "\"></script>\n";
+        }
       }
       
       code = code.replace("[[CSS]]", cssc);
@@ -107,5 +113,9 @@ public class Process {
 
   public void addCss(String path) {
     css.add(path);
+  }
+
+  public void addJs(String path) {
+    js.add(path);
   }
 }
