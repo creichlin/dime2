@@ -5,6 +5,9 @@ import java.nio.ByteBuffer;
 import java.util.Stack;
 import java.util.logging.Logger;
 
+import ch.kerbtier.dime2.Models;
+import ch.kerbtier.dime2.Views;
+import ch.kerbtier.dime2.admin.AdminRoot;
 import ch.kerbtier.dime2.admin.model.Button;
 import ch.kerbtier.dime2.admin.model.ConfirmDialog;
 import ch.kerbtier.dime2.admin.model.DateInput;
@@ -25,20 +28,32 @@ import ch.kerbtier.dime2.admin.model.TextArea;
 import ch.kerbtier.dime2.admin.model.TextInput;
 import ch.kerbtier.dime2.admin.ui.ElementNode;
 import ch.kerbtier.dime2.mi.MiTemplate;
+import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.helene.HList;
 import ch.kerbtier.helene.HNode;
 import ch.kerbtier.helene.HObject;
 import ch.kerbtier.struwwel.Observable;
-import static ch.kerbtier.dime2.ContainerFacade.*;
+import ch.kerbtier.webb.di.InjectSession;
+import ch.kerbtier.webb.di.InjectSingleton;
 
+@Inject
 public class Builder {
+  
+  @InjectSingleton
+  private Views views;
+  
+  @InjectSingleton 
+  private Models models;
+  
+  @InjectSession
+  private AdminRoot adminRoot;
   
   private Logger logger = Logger.getLogger(Builder.class.getCanonicalName());
 
   Stack<Form> forms = new Stack<>();
 
   public void buildMenu(NodeList menu) {
-    ElementNode en = getViews().getMenu();
+    ElementNode en = views.getMenu();
 
     for (ElementNode uin : en.getElements()) {
       menu.add(build(uin, null));
@@ -86,8 +101,8 @@ public class Builder {
         public void run() {
           String view = setViewNode.getAttribute("view");
           String model = setViewNode.getAttribute("model");
-          Node newNode = new Builder().build(getViews().getWidget(view).firstElement(), getModels().get(model));
-          getAdminRoot().getRoot().set(setViewNode.getAttribute("area"), newNode);
+          Node newNode = new Builder().build(views.getWidget(view).firstElement(), models.get(model));
+          adminRoot.getRoot().set(setViewNode.getAttribute("area"), newNode);
         }
       });
     }
@@ -133,7 +148,7 @@ public class Builder {
             }
           });
 
-          getAdminRoot().getRoot().setDialog(dialog);
+          adminRoot.getRoot().setDialog(dialog);
         }
 
       });
@@ -153,8 +168,8 @@ public class Builder {
         @Override
         public void run() {
           String view = setView.getAttribute("view");
-          Node newNode = new Builder().build(getViews().getWidget(view).firstElement(), getModel(setView, node));
-          getAdminRoot().getRoot().set(setView.getAttribute("area"), newNode);
+          Node newNode = new Builder().build(views.getWidget(view).firstElement(), getModel(setView, node));
+          adminRoot.getRoot().set(setView.getAttribute("area"), newNode);
         }
       });
     }

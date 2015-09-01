@@ -1,9 +1,8 @@
 package ch.kerbtier.dime2.admin.model.builder;
 
-import static ch.kerbtier.dime2.ContainerFacade.*;
-
 import java.util.List;
 
+import ch.kerbtier.dime2.admin.AdminRoot;
 import ch.kerbtier.dime2.admin.model.Button;
 import ch.kerbtier.dime2.admin.model.Form;
 import ch.kerbtier.dime2.admin.model.Grid;
@@ -13,10 +12,21 @@ import ch.kerbtier.dime2.admin.model.Ruler;
 import ch.kerbtier.dime2.admin.model.Table;
 import ch.kerbtier.dime2.admin.model.TextInput;
 import ch.kerbtier.dime2.admin.model.form.FormEntity;
+import ch.kerbtier.dime2.auth.Authentication;
 import ch.kerbtier.dime2.auth.User;
+import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.struwwel.MappedObservable;
+import ch.kerbtier.webb.di.InjectSession;
+import ch.kerbtier.webb.di.InjectSingleton;
 
+@Inject
 public class UserAdmin {
+  
+  @InjectSingleton
+  private Authentication authentication;
+  
+  @InjectSession
+  private AdminRoot adminRoot;
 
   public void start() {
     NodeList nl = new NodeList();
@@ -29,7 +39,7 @@ public class UserAdmin {
     nl.add(userList);
     userList.getColumns().add(new Label("Username"));
     userList.getColumns().add(new Label("Actions"));
-    for(final String username: getAuthentication().getUsernames()) {
+    for(final String username: authentication.getUsernames()) {
       Table.Row row = userList.appendRow();
       row.add(new Label(username));
       Button editButton = new Button(null, "edit");
@@ -52,7 +62,7 @@ public class UserAdmin {
     }
     
     
-    getAdminRoot().getRoot().set("list", nl);
+   adminRoot.getRoot().set("list", nl);
   }
 
   protected void deleteUser(String username) {
@@ -61,7 +71,7 @@ public class UserAdmin {
 
   protected void showEdit(String username) {
     NodeList nl = new NodeList();
-    User user = getAuthentication().get(username);
+    User user = authentication.get(username);
     Form form = new Form(new UserAdminEntitySubject(user));
     
     Grid l1 = new Grid();
@@ -82,7 +92,7 @@ public class UserAdmin {
     form.add(save);
     nl.add(form);
     
-    getAdminRoot().getRoot().set("workspace", nl);
+    adminRoot.getRoot().set("workspace", nl);
   }
   
   class UserAdminEntitySubject implements FormEntity {

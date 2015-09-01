@@ -8,16 +8,19 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import ch.kerbtier.dime2.ContainerFacade;
+import ch.kerbtier.dime2.Models;
 import ch.kerbtier.dime2.site.renderer.queries.Published;
 import ch.kerbtier.dime2.site.renderer.queries.Query;
+import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.helene.HList;
 import ch.kerbtier.helene.HObject;
 import ch.kerbtier.helene.HSlug;
 import ch.kerbtier.helene.exceptions.UndefinedFieldException;
+import ch.kerbtier.webb.di.InjectSingleton;
 
 import com.github.jknack.handlebars.ValueResolver;
 
+@Inject
 public class HNodeResolver implements ValueResolver {
   public static HNodeResolver INSTANCE = new HNodeResolver();
 
@@ -25,12 +28,15 @@ public class HNodeResolver implements ValueResolver {
   static {
     QUERIES.put("published", new Published());
   }
+  
+  @InjectSingleton
+  private Models models;
 
   @Override
   public Object resolve(final Object context, final String name) {
     // in all templates, $ resolves to root model node
     if (name.equals("$")) {
-      return ContainerFacade.getModels().get();
+      return models.get();
     }
 
     // if we have [LIST].foo we want to apply foo transformation to the list

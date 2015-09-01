@@ -7,30 +7,47 @@ import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import ch.kerbtier.amarillo.Route;
 import ch.kerbtier.amarillo.Verb;
+import ch.kerbtier.dime2.Response;
+import ch.kerbtier.dime2.admin.AdminRoot;
 import ch.kerbtier.dime2.admin.model.Node;
 import ch.kerbtier.dime2.admin.queue.UserEvent;
 import ch.kerbtier.dime2.admin.queue.UserEventQueue;
 import ch.kerbtier.dime2.auth.User;
-import static ch.kerbtier.dime2.ContainerFacade.*;
+import ch.kerbtier.esdi.Inject;
+import ch.kerbtier.webb.di.InjectRequest;
+import ch.kerbtier.webb.di.InjectSession;
 
+@Inject
 public class Events {
+  
+  @InjectSession
+  private AdminRoot adminRoot;
+  
+  @InjectRequest
+  private HttpServletRequest httpRequest;
+  
+  @InjectRequest
+  private Response response;
+  
   @Route(pattern = "admin/evs", verb = Verb.POST)
   public void events() {
-    User user = getAdminRoot().getUser();
+    User user = adminRoot.getUser();
     if(user == null) {
       throw new RuntimeException("no user authenticated");
     }
     
     
-    UserEventQueue ueq = getAdminRoot().getRoot().getQueue();
+    UserEventQueue ueq = adminRoot.getRoot().getQueue();
 
     try {
-      BufferedReader br = getHttpRequest().getReader();
+      BufferedReader br = httpRequest.getReader();
 
       Type listType = new TypeToken<ArrayList<Event>>() {
       }.getType();
@@ -60,7 +77,7 @@ public class Events {
       // none
     }
     // System.out.println("events... " + events);
-    getResponse().setJson(events);
+    response.setJson(events);
   }
 
   class Event {

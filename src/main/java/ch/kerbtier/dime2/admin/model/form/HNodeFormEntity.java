@@ -6,13 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import ch.kerbtier.dime2.admin.AdminRoot;
+import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.helene.HList;
 import ch.kerbtier.helene.HNode;
 import ch.kerbtier.helene.HObject;
 import ch.kerbtier.helene.ModifiableNode;
 import ch.kerbtier.struwwel.MappedObservable;
-import static ch.kerbtier.dime2.ContainerFacade.*;
+import ch.kerbtier.webb.di.InjectSession;
 
+@Inject
 public class HNodeFormEntity implements FormEntity {
   
   private Logger logger = Logger.getLogger(HNodeFormEntity.class.getCanonicalName());
@@ -26,6 +29,9 @@ public class HNodeFormEntity implements FormEntity {
   private MappedObservable<String> onChange = new MappedObservable<>();
   private List<HObject> toDelete = new ArrayList<>();
 
+  @InjectSession
+  private AdminRoot adminRoot;
+  
   public HNodeFormEntity(HNodeFormEntity parent, HNode subject) {
     this.parent = parent;
     this.subject = subject;
@@ -90,7 +96,7 @@ public class HNodeFormEntity implements FormEntity {
       onChange.inform(list);
     }catch(UnsupportedOperationException e) {
       logger.warning("cannot add new element to list of unsaved element");
-      getAdminRoot().getLog().log("cannot add new element to list of unsaved element");
+     adminRoot.getLog().log("cannot add new element to list of unsaved element");
     }
   }
 

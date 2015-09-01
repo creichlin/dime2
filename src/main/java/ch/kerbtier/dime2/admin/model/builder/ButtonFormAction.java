@@ -1,15 +1,17 @@
 package ch.kerbtier.dime2.admin.model.builder;
 
-import java.util.logging.Logger;
-
-import ch.kerbtier.dime2.ContainerFacade;
+import ch.kerbtier.dime2.admin.AdminRoot;
 import ch.kerbtier.dime2.admin.model.Form;
 import ch.kerbtier.dime2.mi.MiTemplate;
+import ch.kerbtier.esdi.Inject;
+import ch.kerbtier.webb.di.InjectSession;
 
+@Inject
 public class ButtonFormAction implements Runnable {
-
-  private Logger logger= Logger.getLogger(ButtonFormAction.class.getCanonicalName());
   
+  @InjectSession
+  private AdminRoot adminRoot;
+
   private Form form;
   private Command command;
   private String message;
@@ -30,12 +32,12 @@ public class ButtonFormAction implements Runnable {
         form.save();
         if(message != null) {
           MiTemplate mi = new MiTemplate(message, form);
-          ContainerFacade.getAdminRoot().getLog().log(mi.compile());
+          adminRoot.getLog().log(mi.compile());
         }
       } else {
         if(message != null) {
           MiTemplate mi = new MiTemplate("Cannot save, form has invalid values.", form);
-          ContainerFacade.getAdminRoot().getLog().log(mi.compile());
+          adminRoot.getLog().log(mi.compile());
         }
       }
     } else if(command == Command.add) {

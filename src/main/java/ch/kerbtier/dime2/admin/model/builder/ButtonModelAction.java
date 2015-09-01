@@ -1,10 +1,16 @@
 package ch.kerbtier.dime2.admin.model.builder;
 
-import ch.kerbtier.dime2.ContainerFacade;
+import ch.kerbtier.dime2.admin.AdminRoot;
 import ch.kerbtier.dime2.mi.MiTemplate;
+import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.helene.HNode;
+import ch.kerbtier.webb.di.InjectSession;
 
+@Inject
 public class ButtonModelAction implements Runnable {
+  
+  @InjectSession
+  private AdminRoot adminRoot;
 
   private HNode model;
   private Command command;
@@ -31,7 +37,7 @@ public class ButtonModelAction implements Runnable {
     
     if(message != null) {
       MiTemplate mi = new MiTemplate(message, model);
-      ContainerFacade.getAdminRoot().getLog().log(mi.compile());
+      adminRoot.getLog().log(mi.compile());
     }
   }
 }

@@ -19,11 +19,11 @@ public class Response {
     this.contentType = contentType;
   }
 
-  Path getFile() {
+  public Path getFile() {
     return file;
   }
 
-  String getContentType() {
+  public String getContentType() {
     return contentType;
   }
 

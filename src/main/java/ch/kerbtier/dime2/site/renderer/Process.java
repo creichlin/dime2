@@ -11,14 +11,24 @@ import org.apache.commons.io.FileUtils;
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Template;
 
-import static ch.kerbtier.dime2.ContainerFacade.*;
+import ch.kerbtier.dime2.Config;
 import ch.kerbtier.dime2.modules.Page;
+import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.helene.HNode;
 import ch.kerbtier.webb.cssopti.CssOpti;
+import ch.kerbtier.webb.di.InjectSingleton;
+import ch.kerbtier.webb.util.ContextInfo;
 
+@Inject
 public class Process {
 
   private static ThreadLocal<Process> local = new ThreadLocal<>();
+  
+  @InjectSingleton
+  private ContextInfo contextInfo; 
+
+  @InjectSingleton
+  private Config config; 
   
   private Page page;
   private HNode model;
@@ -49,30 +59,30 @@ public class Process {
       
       if(sr.isDevelopment()) {
         for(String cssf: css) {
-          cssc += "<link rel=\"stylesheet\" href=\"" + getContextInfo().getPath() + "/modules/" + cssf + "\">\n";
+          cssc += "<link rel=\"stylesheet\" href=\"" + contextInfo.getPath() + "/modules/" + cssf + "\">\n";
         }
         for(String jsf: js) {
-          cssc += "<script src=\"" + getContextInfo().getPath() + "/modules/" + jsf + "\"></script>\n";
+          cssc += "<script src=\"" + contextInfo.getPath() + "/modules/" + jsf + "\"></script>\n";
         }
       } else {
         
-        CssOpti opti = new CssOpti(getConfig().getImageCache());
+        CssOpti opti = new CssOpti(config.getImageCache());
         
         for(String cssf: css) {
-          Path fp = getConfig().getModulesPath(cssf);
+          Path fp = config.getModulesPath(cssf);
           opti.add(fp);
         }
         
         String key = opti.getId() + ".css";
 
-        if(!Files.exists(getConfig().getImageCache(key))) {
-          FileUtils.writeStringToFile(getConfig().getImageCache(key).toFile(), opti.process());
+        if(!Files.exists(config.getImageCache(key))) {
+          FileUtils.writeStringToFile(config.getImageCache(key).toFile(), opti.process());
         }
         
-        cssc = "<link rel=\"stylesheet\" href=\"" + getContextInfo().getPath() + "/ic/" + key + "\">\n";
+        cssc = "<link rel=\"stylesheet\" href=\"" + contextInfo.getPath() + "/ic/" + key + "\">\n";
 
         for(String jsf: js) {
-          cssc += "<script src=\"" + getContextInfo().getPath() + "/modules/" + jsf + "\"></script>\n";
+          cssc += "<script src=\"" + contextInfo.getPath() + "/modules/" + jsf + "\"></script>\n";
         }
       }
       

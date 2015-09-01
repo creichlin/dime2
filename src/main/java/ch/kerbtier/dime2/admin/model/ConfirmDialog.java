@@ -1,9 +1,15 @@
 package ch.kerbtier.dime2.admin.model;
 
-import ch.kerbtier.dime2.ContainerFacade;
+import ch.kerbtier.dime2.admin.AdminRoot;
+import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.struwwel.Observable;
+import ch.kerbtier.webb.di.InjectSession;
 
+@Inject
 public class ConfirmDialog extends Dialog {
+  
+  @InjectSession
+  private AdminRoot adminRoot;
 
   private Label message = new Label("");
   
@@ -23,7 +29,7 @@ public class ConfirmDialog extends Dialog {
     no.getClick().register(new Runnable() {
       @Override
       public void run() {
-        ContainerFacade.getAdminRoot().getRoot().setDialog(null);
+        adminRoot.getRoot().setDialog(null);
       }
     });
 
@@ -31,7 +37,7 @@ public class ConfirmDialog extends Dialog {
       @Override
       public void run() {
         getConfirm().inform();
-        ContainerFacade.getAdminRoot().getRoot().setDialog(null);
+        adminRoot.getRoot().setDialog(null);
       }
     });
     

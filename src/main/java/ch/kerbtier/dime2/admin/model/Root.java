@@ -1,15 +1,26 @@
 package ch.kerbtier.dime2.admin.model;
 
-import static ch.kerbtier.dime2.ContainerFacade.*;
 
 import java.nio.file.Path;
 
+import ch.kerbtier.dime2.Models;
+import ch.kerbtier.dime2.admin.AdminRoot;
 import ch.kerbtier.dime2.admin.model.builder.Builder;
 import ch.kerbtier.dime2.admin.model.builder.UserAdmin;
 import ch.kerbtier.dime2.admin.queue.UserEventQueue;
+import ch.kerbtier.esdi.Inject;
+import ch.kerbtier.webb.di.InjectSession;
+import ch.kerbtier.webb.di.InjectSingleton;
 
+@Inject
 public class Root extends Node {
 
+  @InjectSingleton
+  private Models models;
+  
+  @InjectSession
+  private AdminRoot adminRoot;
+  
   @ADHS
   private String title;
 
@@ -48,10 +59,10 @@ public class Root extends Node {
       @Override
       public void run() {
         try {
-          Path path = getModels().writeData();
-            getAdminRoot().getLog().log("Wrote data to disk " + path);
+          Path path = models.writeData();
+            adminRoot.getLog().log("Wrote data to disk " + path);
           }catch(Exception e) {
-            getAdminRoot().getLog().log("Failed to write data. " + e.getMessage());
+            adminRoot.getLog().log("Failed to write data. " + e.getMessage());
         }
       }
     });

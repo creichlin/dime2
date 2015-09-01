@@ -1,21 +1,23 @@
 package ch.kerbtier.dime2.site.renderer;
 
-import static ch.kerbtier.dime2.ContainerFacade.getModules;
-
 import java.io.IOException;
 
+import ch.kerbtier.dime2.Modules;
 import ch.kerbtier.dime2.modules.Page;
+import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.helene.HObject;
+import ch.kerbtier.webb.di.InjectSingleton;
 
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
-import com.google.common.io.Files;
 
+@Inject
 public class RenderHelper implements Helper<HObject> {
   
-  
+  @InjectSingleton
+  private Modules modules;
 
   @Override
   public CharSequence apply(HObject model, Options options) {
@@ -29,7 +31,7 @@ public class RenderHelper implements Helper<HObject> {
     String style = options.param(0) == null ? "default" : (String)options.param(0);
     String ext = p.getExtension();
     
-    Page page = getModules().getPage(model.getName() + "." + style + "." + ext);
+    Page page = modules.getPage(model.getName() + "." + style + "." + ext);
     if (page == null) {
       throw new RuntimeException("found no template for " + model.getName() + "." + style + "." + ext);
     }

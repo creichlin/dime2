@@ -12,18 +12,28 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.xml.bind.DatatypeConverter;
 
-import ch.kerbtier.dime2.ContainerFacade;
+import ch.kerbtier.dime2.Config;
+import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.helene.HBlob;
 import ch.kerbtier.lanthanum.Vec2i;
+import ch.kerbtier.webb.di.InjectSingleton;
 import ch.kerbtier.webb.pictomizer.Pictomizer;
+import ch.kerbtier.webb.transform2d.ImageTransformer;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
 
+@Inject
 public class ImageHelper implements Helper<Object> {
   private static Map<String, Vec2i> sizes = new HashMap<>();
   private static Map<String, String> extensions = new HashMap<>();
+  
+  @InjectSingleton
+  private Config config;
+  
+  @InjectSingleton
+  private ImageTransformer imageTransformer;
 
   @Override
   public CharSequence apply(Object data, Options arg) throws IOException {
@@ -51,16 +61,16 @@ public class ImageHelper implements Helper<Object> {
       
       Vec2i size = sizes.get(key);
       String ext = extensions.get(key);
-      Path p = ContainerFacade.getConfig().getImageCache(key + "." + ext);
+      Path p = config.getImageCache(key + "." + ext);
 
       if (ext != null && size != null && Files.exists(p)) {
         // file is calculated already, we don't need to do anything
       } else {
-        BufferedImage bi = ContainerFacade.getImageTransformer().transform(blob.asBuffer(), (String) arg.param(0));
+        BufferedImage bi = imageTransformer.transform(blob.asBuffer(), (String) arg.param(0));
         Pictomizer picto = new Pictomizer(bi);
         ext = picto.getFormat();
         extensions.put(key, ext);
-        p = ContainerFacade.getConfig().getImageCache(key + "." + ext);
+        p = config.getImageCache(key + "." + ext);
         
         if (!Files.exists(p.getParent())) {
           Files.createDirectories(p.getParent());
