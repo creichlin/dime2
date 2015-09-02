@@ -3,17 +3,18 @@ package ch.kerbtier.dime2;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import ch.kerbtier.esdi.Inject;
+import ch.kerbtier.webb.di.InjectSingleton;
 import ch.kerbtier.webb.util.Configuration;
 import ch.kerbtier.webb.util.ContextInfo;
 
+@Inject
 public class Config {
+  @InjectSingleton
   private Configuration config;
+  
+  @InjectSingleton
   private ContextInfo contextInfo;
-
-  public Config(Configuration config, ContextInfo contextInfo) {
-    this.config = config;
-    this.contextInfo = contextInfo;
-  }
 
   public boolean isDevelopment() {
     return config.get("development", false);

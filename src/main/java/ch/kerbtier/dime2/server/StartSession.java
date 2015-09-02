@@ -7,6 +7,6 @@ import ch.kerbtier.webb.di.InjectSession;
 public class StartSession {
 
   public void run() {
-    Esdi.onRequestFor(AdminRoot.class).with(InjectSession.class).deliver(AdminRoot.class);
+
   }
 }

@@ -3,20 +3,27 @@ package ch.kerbtier.dime2;
 import java.nio.file.Path;
 
 import ch.kerbtier.dime2.modules.Module;
+import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.helene.HNode;
 import ch.kerbtier.helene.Parse;
 import ch.kerbtier.helene.Store;
 import ch.kerbtier.helene.entities.EntityMap;
 import ch.kerbtier.helene.impl.ImpEntityMap;
 import ch.kerbtier.helene.store.sql.SqlStore;
+import ch.kerbtier.webb.di.InjectSingleton;
 
+@Inject
 public class Models {
   private EntityMap definition;
   private SqlStore store;
+  
+  @InjectSingleton
   private Config config;
-
-  public Models(Config config, Modules modules) {
-    this.config = config;
+  
+  @InjectSingleton
+  private Modules modules;
+  
+  public Models() {
     definition = new ImpEntityMap();
 
     for (Module m : modules) {

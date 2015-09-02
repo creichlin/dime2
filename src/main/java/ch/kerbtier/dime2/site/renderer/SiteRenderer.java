@@ -6,17 +6,22 @@ import java.io.PrintWriter;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 
+import ch.kerbtier.dime2.Config;
 import ch.kerbtier.dime2.modules.Page;
 import ch.kerbtier.dime2.modules.PageContent;
+import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.helene.HNode;
+import ch.kerbtier.webb.di.InjectSingleton;
 
+@Inject
 public class SiteRenderer {
 
-  private boolean development;
   final Handlebars handlebars = new Handlebars();
+  
+  @InjectSingleton
+  private Config config;
 
-  public SiteRenderer(boolean development) {
-    this.development = development;
+  public SiteRenderer() {
     handlebars.registerHelper("render", new RenderHelper());
     handlebars.registerHelper("css", new CssHelper());
     handlebars.registerHelper("js", new JsHelper());
@@ -36,6 +41,6 @@ public class SiteRenderer {
   }
   
   public boolean isDevelopment() {
-    return development;
+    return config.isDevelopment();
   }
 }

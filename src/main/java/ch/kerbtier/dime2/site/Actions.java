@@ -23,24 +23,24 @@ import ch.kerbtier.webb.di.InjectSingleton;
 
 @Inject
 public class Actions {
-  
+
   private static int CACHE_SECONDS = 60 * 60 * 24 * 356;
-  
+
   @InjectSingleton
   private Modules modules;
-  
+
   @InjectSingleton
   private Models models;
-  
+
   @InjectRequest
   private HttpServletResponse httpResponse;
-  
+
   @InjectRequest
   private Response response;
-  
+
   @InjectSingleton
   private SiteRenderer siteRenderer;
-  
+
   @InjectSingleton
   private Config config;
 
@@ -57,7 +57,7 @@ public class Actions {
 
   private void serveMapping(Mapping mapping) {
     Page page = modules.getPage(mapping.getTemplate());
-    
+
     try {
 
       HNode model = models.get(mapping.getModel());
@@ -73,7 +73,8 @@ public class Actions {
       pw.close();
     } catch (IOException e) {
       throw new RuntimeException(e);
-    }  }
+    }
+  }
 
   private void serveHtml(String slug, Modules m) {
     Page page = m.getRoot();

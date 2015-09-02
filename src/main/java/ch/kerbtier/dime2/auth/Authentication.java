@@ -6,7 +6,6 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,13 +16,18 @@ import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
 
+import ch.kerbtier.dime2.Config;
+import ch.kerbtier.esdi.Inject;
+import ch.kerbtier.webb.di.InjectSingleton;
+
+@Inject
 public class Authentication {
   private Map<String, User> users = new HashMap<>();
   
-  private Path path;
+  @InjectSingleton
+  private Config config;
   
-  public Authentication(@Nonnull Path path) {
-    this.path = path;
+  public Authentication() {
     this.read();
     
     if(users.size() == 0) {
@@ -39,7 +43,7 @@ public class Authentication {
     Properties prop = new Properties();
     
     try {
-      Reader reader= Files.newBufferedReader(path, Charset.forName("UTF-8"));
+      Reader reader= Files.newBufferedReader(config.getUserRealm(), Charset.forName("UTF-8"));
       prop.load(reader);
       reader.close();
     }catch(NoSuchFileException e) {
@@ -99,7 +103,7 @@ public class Authentication {
     }
 
     try {
-      Writer writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"));
+      Writer writer = Files.newBufferedWriter(config.getUserRealm(), Charset.forName("UTF-8"));
       prop.store(writer, "");
       writer.close();
     } catch (IOException e) {

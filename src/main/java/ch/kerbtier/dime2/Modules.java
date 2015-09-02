@@ -13,13 +13,19 @@ import ch.kerbtier.dime2.modules.ModuleDependencyProvider;
 import ch.kerbtier.dime2.modules.ModuleInfo.Mapping;
 import ch.kerbtier.dime2.modules.Page;
 import ch.kerbtier.dime2.modules.resolver.Resolver;
+import ch.kerbtier.esdi.Inject;
+import ch.kerbtier.webb.di.InjectSingleton;
 
+@Inject
 public class Modules implements Iterable<Module> {
 
   private Resolver<Module> modules = new Resolver<>(new ModuleDependencyProvider());
   private Map<String, Module> byName = new HashMap<>();
 
-  public Modules(Config config) {
+  @InjectSingleton
+  private Config config;
+  
+  public Modules() {
     try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(config.getModulesPath())) {
       for (Path path : directoryStream) {
         Module module = new Module(this, path);

@@ -9,8 +9,6 @@ public class StartRequest {
 
   public void run() {
 
-    Esdi.onRequestFor(Response.class).with(InjectRequest.class).deliver(Response.class);
-    Esdi.onRequestFor(HttpInfo.class).with(InjectRequest.class).deliver(HttpInfo.class);
 
   }
 
