@@ -11,17 +11,27 @@ public class ModuleJar {
   private List<ModuleInit> initInstances = new ArrayList<>();
   
   
-  public ModuleJar(Path jar, Module module) {
+  public ModuleJar(List<Path> jars, Module module) {
     this.module = module;
+    
+    
     try {
-      URLClassLoader child = new URLClassLoader(new URL[] { jar.toUri().toURL() }, this.getClass().getClassLoader());
+      URL[] urls = new URL[jars.size()];
+      
+      for(int cnt = 0; cnt < urls.length; cnt++) {
+        urls[cnt] = jars.get(cnt).toUri().toURL();
+      }
+
+      System.out.println("create classloader for: " + jars);
+      
+      URLClassLoader child = new URLClassLoader(urls, this.getClass().getClassLoader());
 
       for (String cn : module.getInfo().getInitClasses()) {
         Class<ModuleInit> classToLoad = (Class<ModuleInit>) Class.forName(cn, true, child);
         initInstances.add(classToLoad.newInstance());
       }
     } catch (Exception e) {
-      throw new RuntimeException("failed to load module jar", e);
+      throw new RuntimeException("failed to load module jars", e);
     }
   }
 

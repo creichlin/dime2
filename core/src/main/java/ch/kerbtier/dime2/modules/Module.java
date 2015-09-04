@@ -41,14 +41,34 @@ public class Module {
     }
 
     moduleInfo = new ModuleInfo(description);
-    
-    
-    if(Files.exists(folder.resolve("module.jar"))) {
-      jar = new ModuleJar(folder.resolve("module.jar"), this);
-      jar.init();
+
+    // List all jars in the modules lib folder and store them in a list
+    List<Path> jars = new ArrayList<>();
+    Path dir = folder.resolve("lib");
+
+    // only if lib folder exists...
+    if (Files.exists(dir)) {
+      DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
+        @Override
+        public boolean accept(Path file) throws IOException {
+          return file.getFileName().toString().endsWith(".jar");
+        }
+      };
+      try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, filter)) {
+        for (Path path : stream) {
+          jars.add(path);
+        }
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+
+      // if one or more jars found, add them as a ModuleJar and load/init them
+      if (jars.size() > 0) {
+        jar = new ModuleJar(jars, this);
+        jar.init();
+      }
     }
-    
-    
+
   }
 
   public Path getFolder() {
