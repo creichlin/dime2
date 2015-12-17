@@ -47,19 +47,9 @@ public class Modules implements Iterable<Module> {
         }
       }
     }
-    return null;
+    throw new RuntimeException("found no template for " + name);
   }
   
-  // TODO: getPage should be used instead. does the same
-  public Page getRoot() {
-    for(Module m: modules) {
-      if(m.hasSite() && m.getSite().hasRoot()) {
-        return m.getSite().getRoot();
-      }
-    }
-    return null;
-  }
-
   @Override
   public Iterator<Module> iterator() {
     return modules.iterator();

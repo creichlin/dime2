@@ -32,7 +32,7 @@ public class Process {
   
   private Page page;
   private HNode model;
-  private SiteRenderer sr;
+  private SiteRenderer siteRenderer;
   
   // current state
   private Page currentPage;
@@ -41,7 +41,7 @@ public class Process {
   private List<String> js = new ArrayList<>();
 
   public Process(SiteRenderer sr, Page page, HNode model) {
-    this.sr = sr;
+    this.siteRenderer = sr;
     this.page = page;
     this.model = model;
   }
@@ -57,7 +57,7 @@ public class Process {
       String cssc = "";
       
       
-      if(sr.isDevelopment()) {
+      if(siteRenderer.isDevelopment()) {
         for(String cssf: css) {
           cssc += "<link rel=\"stylesheet\" href=\"" + contextInfo.getPath() + "/modules/" + cssf + "\">\n";
         }
@@ -102,7 +102,7 @@ public class Process {
 
   public Template compile(Page page_) throws IOException {
     this.currentPage = page_;
-    return sr.compile(page_.getContent());
+    return siteRenderer.compile(page_.getContent());
   }
 
   /**

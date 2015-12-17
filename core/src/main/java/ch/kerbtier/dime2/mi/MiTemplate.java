@@ -115,8 +115,6 @@ public class MiTemplate implements Runnable {
   }
 
   public String formatString(String value, String format) {
-    // Hardcode UK locale for dateformats.
-    // All other formats are just weird.
     if ("short".equals(format)) {
       if (value.length() > 24) {
         return value.substring(0, 20) + "...";

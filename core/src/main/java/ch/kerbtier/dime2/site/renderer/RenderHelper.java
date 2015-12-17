@@ -32,9 +32,6 @@ public class RenderHelper implements Helper<HObject> {
     String ext = p.getExtension();
     
     Page page = modules.getPage(model.getName() + "." + style + "." + ext);
-    if (page == null) {
-      throw new RuntimeException("found no template for " + model.getName() + "." + style + "." + ext);
-    }
     try {
       Context context = Context.newBuilder(model).resolver(HNodeResolver.INSTANCE).build();
       return new Handlebars.SafeString(p.compile(page).apply(context));

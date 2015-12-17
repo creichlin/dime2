@@ -77,7 +77,7 @@ public class Actions {
   }
 
   private void serveHtml(String slug, Modules m) {
-    Page page = m.getRoot();
+    Page page = m.getPage("index.html");
 
     httpResponse.setContentType("text/html;charset=utf-8");
     try {

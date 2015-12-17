@@ -26,8 +26,6 @@ buildscript {
 
 allprojects {
 
-
-
   project.ext {
     aspectjVersion = '1.8.6'
   }
