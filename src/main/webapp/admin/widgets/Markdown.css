@@ -1,0 +1,15 @@
+.markdown {
+  display: block;
+}
+
+.markdown p {
+  padding-bottom: 22px;
+}
+
+.markdown li {
+  padding-left: 16px;
+}
+
+.markdown ol, .markdown ul {
+  list-style: inside none circle;
+}

@@ -95,7 +95,7 @@ public class Main {
           pw.print("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + css + ".css\">");
         }
 
-        for (String type : "NodeList,Root,Button,Label,Menu,MenuItem,Table,Grid,TextInput,TextArea,DateInput,Form,SlugInput,FileInput,Ruler,Log,ConfirmDialog"
+        for (String type : "NodeList,Root,Button,Label,Menu,MenuItem,Table,Grid,TextInput,TextArea,DateInput,Form,SlugInput,FileInput,Ruler,Log,ConfirmDialog,Markdown"
             .split(",")) {
           pw.print("<script type=\"text/javascript\" src=\"widgets/" + type + ".js\"></script>");
           if (Files.exists(contextInfo.getLocalPath().resolve("admin/widgets/" + type + ".css"))) {

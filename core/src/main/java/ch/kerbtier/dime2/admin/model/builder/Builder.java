@@ -5,6 +5,8 @@ import java.nio.ByteBuffer;
 import java.util.Stack;
 import java.util.logging.Logger;
 
+import org.pegdown.PegDownProcessor;
+
 import ch.kerbtier.dime2.Models;
 import ch.kerbtier.dime2.Views;
 import ch.kerbtier.dime2.admin.AdminRoot;
@@ -15,6 +17,7 @@ import ch.kerbtier.dime2.admin.model.FileInput;
 import ch.kerbtier.dime2.admin.model.Form;
 import ch.kerbtier.dime2.admin.model.Grid;
 import ch.kerbtier.dime2.admin.model.Label;
+import ch.kerbtier.dime2.admin.model.Markdown;
 import ch.kerbtier.dime2.admin.model.MenuItem;
 import ch.kerbtier.dime2.admin.model.Node;
 import ch.kerbtier.dime2.admin.model.NodeList;
@@ -131,6 +134,12 @@ public class Builder {
     return label;
   }
 
+  public Node markdown(ElementNode en, HNode node) {
+    String text = new PegDownProcessor().markdownToHtml(en.getText());
+    return new Markdown(text);
+  }
+
+
   public Node button(final ElementNode en, final HNode node) {
     Button button = new Button(en.getText().trim(), en.getAttribute("icon"));
 
@@ -233,7 +242,6 @@ public class Builder {
     final Runnable work = new Runnable() {
       @Override
       public void run() {
-        System.out.println("parent form for " + en.getAttribute("form") + " => " + f.getBackendData());
         list.clear();
 
         try {
