@@ -1,6 +1,9 @@
 package ch.kerbtier.dime2;
 
+import java.nio.charset.Charset;
 import java.nio.file.Path;
+
+import com.google.common.io.Files;
 
 import ch.kerbtier.dime2.modules.Module;
 import ch.kerbtier.esdi.Inject;
@@ -9,6 +12,7 @@ import ch.kerbtier.helene.Parse;
 import ch.kerbtier.helene.Store;
 import ch.kerbtier.helene.entities.EntityMap;
 import ch.kerbtier.helene.impl.ImpEntityMap;
+import ch.kerbtier.helene.store.sql.JsonWriter;
 import ch.kerbtier.helene.store.sql.SqlStore;
 import ch.kerbtier.webb.di.InjectSingleton;
 
@@ -28,7 +32,6 @@ public class Models {
 
     for (Module m : modules) {
       for (Path model : m.getModels()) {
-        System.out.println("parse model: " + model);
         Parse.extend(definition, model);
       }
     }
@@ -51,6 +54,17 @@ public class Models {
   }
 
   public Path writeData() {
+    
+    JsonWriter sql2Json = new JsonWriter(store);
+    
+    Path p = config.getBackupPath("latest.json");
+    try {
+      Files.write(sql2Json.write(), p.toFile(), Charset.forName("UTF-8"));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
+    
     return store.writeBackupTo(config.getBackupPath());
   }
   
