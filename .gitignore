@@ -1,4 +1,7 @@
-/bin
-/build
-/dist
-/lib
+/bin/
+/core/build/
+/build/
+/.gradle/
+
+/db/
+/ic/
