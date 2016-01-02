@@ -6,7 +6,7 @@ d2.views.register('Root', function() {
     this.$list = $('<div class="col-sm-5 col-md-4 sidebar"></div>');
     this.$workspace = $('<div class="col-sm-7 col-sm-offset-5 col-md-8 col-md-offset-4 main workspace"></div>');
 
-    this.$dialog = $('<div class="modal-dialog"></div>');
+    this.$dialog = null;
 
     this.$log = $('<div class="container-fluid root"><div class="row">' +
         '<div class="col-sm-7 col-sm-offset-5 col-md-8 col-md-offset-4 log-container"></div>' +
@@ -40,9 +40,13 @@ d2.views.register('Root', function() {
   }
 
   this.setDialog = function(dialog) {
-    this.$dialog.empty();
+    if(this.$dialog) {
+      this.$dialog.modal('hide');
+      this.$dialog = null;
+    }
+    
     if(dialog) {
-      this.$dialog.append(dialog.$);
+      this.$dialog = dialog.$;
     }
   }
 });

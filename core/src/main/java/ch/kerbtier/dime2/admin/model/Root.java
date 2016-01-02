@@ -25,11 +25,11 @@ public class Root extends Node {
   private String title;
 
   @ADHS
-  private Node workspace = new Label("Here we go");
+  private Node workspace = new Label("");
   @ADHS
-  private Node list = new Label("Here we go");
+  private Node list = new Label("");
   @ADHS
-  private Node log = new Label("Here we go");
+  private Node log = new Label("");
   
   @ADHS
   private Menu menu = new Menu();

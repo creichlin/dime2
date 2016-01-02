@@ -22,6 +22,7 @@ public class ConfirmDialog extends Dialog {
     add(this.message);
     
     NodeList buttons = new NodeList();
+    buttons.setStyle("horizontal");
     
     Button no = new Button("No");
     Button yes = new Button("Yes");
@@ -43,7 +44,7 @@ public class ConfirmDialog extends Dialog {
     
     buttons.add(no);
     buttons.add(yes);
-    add(buttons);
+    setFooter(buttons);
   }
   
   public Observable getConfirm() {

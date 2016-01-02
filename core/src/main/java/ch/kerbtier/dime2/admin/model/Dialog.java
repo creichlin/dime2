@@ -5,30 +5,21 @@ public class Dialog extends NodeList {
   private String title;
   
   @ADHS
-  private Integer width = 300;
-  
-  @ADHS
-  private Integer height = null;
+  private Node footer;
   
   public String getTitle() {
     return title;
   }
+  
   public void setTitle(String title) {
     this.title = title;
   }
-  public int getWidth() {
-    return width;
+
+  public Node getFooter() {
+    return footer;
   }
-  public void setWidth(int width) {
-    this.width = width;
+
+  public void setFooter(Node footer) {
+    this.footer = footer;
   }
-  public int getHeight() {
-    return height;
-  }
-  public void setHeight(int height) {
-    this.height = height;
-  }
-  
-  
-  
 }
