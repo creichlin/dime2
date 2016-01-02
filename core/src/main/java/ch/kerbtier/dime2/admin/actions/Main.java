@@ -86,6 +86,13 @@ public class Main {
         }
 
         pw.print("<html><head>");
+        
+        
+        
+        // pw.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css\" integrity=\"sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7\" crossorigin=\"anonymous\">");
+        // pw.println("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js\" integrity=\"sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS\" crossorigin=\"anonymous\"></script>");        
+        
+        
 
         for (String js : "libs/underscore,libs/zepto,bootstrap,events/ajaxevents".split(",")) {
           pw.print("<script type=\"text/javascript\" src=\"" + js + ".js\"></script>");
@@ -95,7 +102,7 @@ public class Main {
           pw.print("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + css + ".css\">");
         }
 
-        for (String type : "NodeList,Root,Button,Label,Menu,MenuItem,Table,Grid,TextInput,TextArea,DateInput,Form,SlugInput,FileInput,Ruler,Log,ConfirmDialog,Markdown"
+        for (String type : "NodeList,Root,Button,Label,Menu,MenuItem,Table,Grid,TextInput,TextArea,DateInput,Form,SlugInput,FileInput,Ruler,Log,ConfirmDialog,Markdown,Select"
             .split(",")) {
           pw.print("<script type=\"text/javascript\" src=\"widgets/" + type + ".js\"></script>");
           if (Files.exists(contextInfo.getLocalPath().resolve("admin/widgets/" + type + ".css"))) {

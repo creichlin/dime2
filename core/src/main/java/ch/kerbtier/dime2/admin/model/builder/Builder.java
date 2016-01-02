@@ -22,6 +22,7 @@ import ch.kerbtier.dime2.admin.model.MenuItem;
 import ch.kerbtier.dime2.admin.model.Node;
 import ch.kerbtier.dime2.admin.model.NodeList;
 import ch.kerbtier.dime2.admin.model.Ruler;
+import ch.kerbtier.dime2.admin.model.Select;
 import ch.kerbtier.dime2.admin.model.SlugInput;
 import ch.kerbtier.dime2.admin.model.Table;
 import ch.kerbtier.dime2.admin.model.Table.Row;
@@ -350,6 +351,18 @@ public class Builder {
 
     forms.peek().register(ti);
     return ti;
+  }
+  
+  public Node select(ElementNode en, HNode node) {
+    Select select = new Select(en.getAttribute("field"));
+
+    
+    for (ElementNode uin : en.getElements("option")) {
+      select.add(uin.getAttribute("value"), uin.getText());
+    }
+    
+    forms.peek().register(select);
+    return select;
   }
 
   public Node slugInput(ElementNode en, HNode node) {
