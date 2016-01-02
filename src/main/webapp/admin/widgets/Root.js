@@ -1,36 +1,25 @@
 
 d2.views.register('Root', function() {
   this.init = function() {
-    this.$ = $('<div class="root"></div>'); 
-    this.$menu = $('<div class="menu-area box-element"></div>');
-    this.$list = $('<div class="list box-element"></div>');
-    this.$workspace = $('<div class="workspace box-element"></div>');
-    this.$log = $('<div class="log box-element"></div>');
+    this.$ = $('<div class="container-fluid root"><div class="row"></div></div>');
+    
+    this.$list = $('<div class="col-sm-5 col-md-4 sidebar"></div>');
+    this.$workspace = $('<div class="col-sm-7 col-sm-offset-5 col-md-8 col-md-offset-4 main workspace"></div>');
+
     this.$dialog = $('<div class="modal-dialog"></div>');
-    
-    var $ct = $('<div class="ct"></div>');
-    var $ctr = $('<div class="ctr"></div>');
-    $ct.append(this.$list);
-    $ct.append($ctr);
-    $ctr.append(this.$workspace);
-    $ctr.append(this.$log);
+
+    this.$log = $('<div class="container-fluid root"><div class="row">' +
+        '<div class="col-sm-7 col-sm-offset-5 col-md-8 col-md-offset-4 log-container"></div>' +
+        '</div></div>');
+
+    this.$.find('> .row').append(this.$list);
+    this.$.find('> .row').append(this.$workspace);
+
     $("body").append(this.$);
-    this.$.append(this.$menu);
-    this.$.append($ct);
-    this.$.append(this.$dialog);
+    $("body").append(this.$log);
+    $("body").append(this.$dialog);
     
-    this.resize();
-    
-    $(window).resize(_.bind(this.resize, this));
   };
-  
-  this.resize = function() {
-    var height = Math.floor($(window).height() / 22 - 0.5);
-    if(height < 15) {
-      height = 15;
-    }
-    this.$.css('height', 22 * height);
-  }
   
   this.setWorkspace = function(child) {
     this.$workspace.empty();
@@ -43,13 +32,11 @@ d2.views.register('Root', function() {
   }
   
   this.setLog = function(child) {
-    this.$log.empty();
-    this.$log.append(child.$);
+    this.$log.find('.log-container').append(child.$);
   }
   
   this.setMenu = function(menu) {
-    this.$menu.empty();
-    this.$menu.append(menu.$);
+    $('body').prepend(menu.$);
   }
 
   this.setDialog = function(dialog) {

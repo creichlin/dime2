@@ -1,8 +1,7 @@
 d2.views.register('SlugInput', function() {
   this.init = function() {
-    this.$ = $('<div class="slug-input"><input type="text"/></div>');
+    this.$ = $('<div class="slug-input"><input type="text" class="form-control"/></div>');
     this.$input = this.$.children("input");
-    
     
     this.$input.on('change', _.bind(this.change, this));
     this.$input.on('keyup', _.debounce(_.bind(this.change, this), 500));
@@ -17,6 +16,6 @@ d2.views.register('SlugInput', function() {
   }
   
   this.setValid = function(value) {
-    this.$.toggleClass("invalid", !value);
+    this.$.toggleClass("has-error", !value);
   }
 });

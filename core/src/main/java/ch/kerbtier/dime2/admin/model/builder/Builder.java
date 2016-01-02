@@ -11,6 +11,7 @@ import ch.kerbtier.dime2.Models;
 import ch.kerbtier.dime2.Views;
 import ch.kerbtier.dime2.admin.AdminRoot;
 import ch.kerbtier.dime2.admin.model.Button;
+import ch.kerbtier.dime2.admin.model.ButtonGroup;
 import ch.kerbtier.dime2.admin.model.ConfirmDialog;
 import ch.kerbtier.dime2.admin.model.DateInput;
 import ch.kerbtier.dime2.admin.model.FileInput;
@@ -96,7 +97,17 @@ public class Builder {
   }
 
   public Node entry(ElementNode en, HNode node) {
-    MenuItem item = new MenuItem();
+    
+    
+    MenuItem item;
+    
+    if(en.getParent().getName().equals("entry")) {
+      item = new MenuSubItem();
+    } else {
+      item = new MenuItem();
+    }
+    
+    
     item.setText(en.getText().trim());
 
     for (final ElementNode setViewNode : en.getElements("setView")) {
@@ -138,6 +149,15 @@ public class Builder {
   public Node markdown(ElementNode en, HNode node) {
     String text = new PegDownProcessor().markdownToHtml(en.getText());
     return new Markdown(text);
+  }
+  
+  
+  public Node buttonGroup(final ElementNode en, final HNode node) {
+    ButtonGroup buttonGroup = new ButtonGroup();
+    for (ElementNode uin : en.getElements()) {
+      buttonGroup.add(build(uin, node));
+    }
+    return buttonGroup;
   }
 
 

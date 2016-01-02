@@ -87,22 +87,20 @@ public class Main {
 
         pw.print("<html><head>");
         
-        
-        
-        // pw.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css\" integrity=\"sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7\" crossorigin=\"anonymous\">");
-        // pw.println("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js\" integrity=\"sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS\" crossorigin=\"anonymous\"></script>");        
-        
-        
+        pw.println("<script src=\"//code.jquery.com/jquery-2.1.4.min.js\"></script>");
 
-        for (String js : "libs/underscore,libs/zepto,bootstrap,events/ajaxevents".split(",")) {
+        for (String js : "libs/underscore,bootstrap,events/ajaxevents".split(",")) {
           pw.print("<script type=\"text/javascript\" src=\"" + js + ".js\"></script>");
         }
+
+        pw.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css\" integrity=\"sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7\" crossorigin=\"anonymous\">");
+        pw.println("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js\" integrity=\"sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS\" crossorigin=\"anonymous\"></script>");        
 
         for (String css : "default".split(",")) {
           pw.print("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + css + ".css\">");
         }
 
-        for (String type : "NodeList,Root,Button,Label,Menu,MenuItem,Table,Grid,TextInput,TextArea,DateInput,Form,SlugInput,FileInput,Ruler,Log,ConfirmDialog,Markdown,Select"
+        for (String type : "NodeList,Root,Button,Label,Menu,MenuItem,Table,Grid,TextInput,TextArea,DateInput,Form,SlugInput,FileInput,Ruler,Log,ConfirmDialog,Markdown,Select,ButtonGroup"
             .split(",")) {
           pw.print("<script type=\"text/javascript\" src=\"widgets/" + type + ".js\"></script>");
           if (Files.exists(contextInfo.getLocalPath().resolve("admin/widgets/" + type + ".css"))) {
@@ -111,10 +109,6 @@ public class Main {
         }
 
         pw.print("</head><body></body></html>");
-
-        // why was that? some init code? oh yeas... ugly
-        // why? getModels();
-        // why? getViews();
       }
       pw.flush();
 

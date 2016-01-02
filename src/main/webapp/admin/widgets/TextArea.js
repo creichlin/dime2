@@ -1,6 +1,6 @@
 d2.views.register('TextArea', function() {
   this.init = function() {
-    this.$ = $('<div class="text-area"><div class="sizer"></div><textarea></textarea></div>');
+    this.$ = $('<div class="text-area"><div class="sizer"></div><textarea class="form-control"></textarea></div>');
     this.$input = this.$.children("textarea");
     this.$sizer = this.$.children('.sizer');
     
@@ -12,7 +12,7 @@ d2.views.register('TextArea', function() {
   this.kp = function() {
     this.$sizer.text(this.$input.val() + "."); // add the dot so trailing empty lines are rendered
     var lines = this.$sizer.height() / 22;
-    this.$input.css('height', lines * 22);
+    this.$input.css('height', lines * 22 + 6);
   }
 
   this.change = function(e, data) {
@@ -20,7 +20,7 @@ d2.views.register('TextArea', function() {
   }
 
   this.setLines = function(lines) {
-    this.$sizer.css('min-height', lines * 22);
+    this.$sizer.css('min-height', lines * 22 + 6);
     this.kp();
   }
   

@@ -1,15 +1,5 @@
 .date-input {
   
-  input {
-    height: 20px;
-    width: 100%;
-    margin: 1px 0px;
-    border-top: 0px;
-    border-bottom: 0px;
-    border-left: 1px solid #b0b0b0;
-    border-right: 1px solid #b0b0b0;
-    background-image: url(input-bg.png);
-  }
 }
 
 .datepickr-wrapper {

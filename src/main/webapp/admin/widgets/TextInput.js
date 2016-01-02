@@ -1,6 +1,6 @@
 d2.views.register('TextInput', function() {
   this.init = function() {
-    this.$ = $('<div class="text-input"><input type="text"/></div>');
+    this.$ = $('<div class="text-input"><input type="text" class="form-control"/></div>');
     this.$input = this.$.children("input");
     
     

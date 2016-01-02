@@ -1,6 +1,6 @@
 d2.views.register('Button', function() {
   this.init = function() {
-    this.$ = $('<div class="button"></div>');
+    this.$ = $('<div class="button btn btn-default"></div>');
     this.$.on('click', _.bind(this.click, this));
   };
   
@@ -13,7 +13,17 @@ d2.views.register('Button', function() {
   }
   
   this.setIcon = function(icon) {
-    this.$icon = $('<span class="icon ' + icon + '"></span>');
-    this.$.append(this.$icon);
+    
+    if(icon == 'delete') {
+      icon = 'trash';
+    }
+    
+    if(icon == 'up' || icon == 'down') {
+      icon = 'arrow-' + icon;
+    }
+    
+    
+    
+    this.$.addClass('btn-xs glyphicon glyphicon-' + icon);
   }
 });

@@ -1,6 +1,6 @@
 d2.views.register('DateInput', function() {
   this.init = function() {
-    this.$ = $('<div class="date-input"><input type="text" readonly></input></div>');
+    this.$ = $('<div class="date-input"><input type="text" class="form-control" readonly></input></div>');
     this.$input = this.$.children("input");
     
     datepickr(this.$input[0], { dateFormat: 'd/m/Y' });

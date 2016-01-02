@@ -87,20 +87,17 @@ allprojects {
 }
 
 apply plugin: 'war'
-apply plugin: 'jetty'
+apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
+
 
 dependencies {
   compile project(':core')
 }
 
 
-httpPort = 8004
 
-jettyRunWar {
-  if(project.hasProperty('webbContext')) {
-    contextPath = webbContext
-  }
-  reload = "manual"
+gretty {
+  port = 8004
 }
 
 project(':core') {

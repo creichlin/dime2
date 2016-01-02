@@ -50,25 +50,24 @@
           <label>name</label>
           <label>date</label>
           <label></label>
-          <label></label>
-          <label></label>
-          <label></label>
         </columns>
         <rows model="posts">
           <label>{{title:short}}</label>
           <label>{{date:short}}</label>
-          <button icon="edit">
-            <setView area="workspace" view="blog.edit"/>
-          </button>
-          <button icon="delete" confirm="really delete post?">
-            <model command="delete" message="deleted blog post."/>
-          </button>
-          <button icon="up">
-            <model command="up"/>
-          </button>
-          <button icon="down">
-            <model command="down"/>
-          </button>
+          <buttonGroup>
+            <button icon="edit">
+              <setView area="workspace" view="blog.edit"/>
+            </button>
+            <button icon="delete" confirm="really delete post?">
+              <model command="delete" message="deleted blog post."/>
+            </button>
+            <button icon="up">
+              <model command="up"/>
+            </button>
+            <button icon="down">
+              <model command="down"/>
+            </button>
+          </buttonGroup>
         </rows>
       </dataTable>
     </list>
