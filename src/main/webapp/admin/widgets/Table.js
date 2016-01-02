@@ -1,11 +1,8 @@
 d2.views.register('Table', function() {
   this.init = function(parent) {
-    this.$ = $('<table><colgroup></colgroup><thead></thead><tbody></tbody></table>');
+    this.$ = $('<table class="table table-striped table-condensed"><colgroup></colgroup><thead></thead><tbody></tbody></table>');
     this.$body = this.$.children("tbody");
     this.$cols = this.$.children("colgroup");
-    //this.$cols.append('<col></col>');
-    //this.$cols.append('<col></col>');
-    //this.$cols.append('<col></col>');
   };
 
   this.setElement = function(index, child) {

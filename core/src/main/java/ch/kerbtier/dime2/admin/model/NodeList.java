@@ -3,8 +3,8 @@ package ch.kerbtier.dime2.admin.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NodeList extends Node {
-  private List<Node> nodes = new ArrayList<>();
+public class NodeList<ELEMENT_TYPE extends Node> extends Node {
+  private List<ELEMENT_TYPE> nodes = new ArrayList<>();
 
   public int size() {
     return nodes.size();
@@ -22,7 +22,7 @@ public class NodeList extends Node {
 
 
 
-  public void add(Node e) {
+  public void add(ELEMENT_TYPE e) {
     int index = nodes.size();
     nodes.add(e);
     if (getEventQueue() != null) {
@@ -47,11 +47,11 @@ public class NodeList extends Node {
     nodes.clear();
   }
 
-  public Node get(int index) {
+  public ELEMENT_TYPE get(int index) {
     return nodes.get(index);
   }
 
-  public void set(int index, Node element) {
+  public void set(int index, ELEMENT_TYPE element) {
     nodes.set(index, element);
     if (getEventQueue() != null) {
       getEventQueue().set(this, "#" + index, element);
