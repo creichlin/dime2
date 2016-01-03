@@ -39,7 +39,6 @@ public class StartContext {
     System.out.println("start context...");
     System.out.println("contextInfo: " + contextInfo);
     
-    
     Esdi.onRequestFor(Router.class).with(InjectSingleton.class).deliver(Router.class);
     Esdi.onRequestFor(Configuration.class).with(InjectSingleton.class).deliver(Configuration.class);
     
