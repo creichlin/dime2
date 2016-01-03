@@ -55,9 +55,9 @@ allprojects {
     compile('ch.kerbtier.webb:webb:0.1.+') {
       exclude group: 'org.apache.ant'
       exclude group: 'org.eclipse.jetty'
+      exclude module: 'js'
     }
     
-    compile 'com.orientechnologies:orientdb-core:2.1.7'
     compile 'ch.kerbtier.helene:helene:0.2.+'
     compile 'ch.kerbtier.amarillo:amarillo:0.1.+'
     compile 'org.pegdown:pegdown:1.5.0'
