@@ -12,7 +12,7 @@ d2.views.register('TextArea', function() {
   this.kp = function() {
     this.$sizer.text(this.$input.val() + "."); // add the dot so trailing empty lines are rendered
     var lines = this.$sizer.height() / 22;
-    this.$input.css('height', lines * 22 + 6);
+    this.$input.css('height', (lines + 1) * 22);
   }
 
   this.change = function(e, data) {
@@ -20,7 +20,7 @@ d2.views.register('TextArea', function() {
   }
 
   this.setLines = function(lines) {
-    this.$sizer.css('min-height', lines * 22 + 6);
+    this.$sizer.css('min-height', lines * 22);
     this.kp();
   }
   
