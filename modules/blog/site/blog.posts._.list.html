@@ -1,12 +1,12 @@
 {{#published}}
   <article>
     <h2>{{title}}</h2>
-    <span class="author">{{format date "short"}} by Onan</span>
+    <span class="author">{{format date "short"}}</span>
     <p>{{abstract}}</p>
     
     {{markdown content}}
     
   </article>
 {{else}}  
-  <h2>unavailable</h2>
+  <h2>Beitrag nicht verfuegbar</h2>
 {{/published}}
