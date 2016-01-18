@@ -58,7 +58,7 @@ allprojects {
       exclude module: 'js'
     }
     
-    compile 'ch.kerbtier.helene:helene:0.2.+'
+    compile 'ch.kerbtier.epirus:epirus:0.1.+'
     compile 'ch.kerbtier.amarillo:amarillo:0.1.+'
     compile 'org.pegdown:pegdown:1.5.0'
     runtime 'com.h2database:h2:1.4.188'

@@ -1,34 +1,36 @@
 package ch.kerbtier.dime2;
 
-import java.nio.charset.Charset;
 import java.nio.file.Path;
 
-import com.google.common.io.Files;
+import com.mchange.util.AssertException;
 
+import ch.kerbtier.achaia.Parse;
+import ch.kerbtier.achaia.schema.MapEntity;
+import ch.kerbtier.achaia.schema.implementation.ImpMapEntity;
 import ch.kerbtier.dime2.modules.Module;
+import ch.kerbtier.epirus.Epirus;
+import ch.kerbtier.epirus.EpirusObject;
+import ch.kerbtier.epirus.implementation.EpirusImplementation;
 import ch.kerbtier.esdi.Inject;
-import ch.kerbtier.helene.HNode;
-import ch.kerbtier.helene.Parse;
-import ch.kerbtier.helene.Store;
-import ch.kerbtier.helene.entities.EntityMap;
-import ch.kerbtier.helene.impl.ImpEntityMap;
-import ch.kerbtier.helene.store.sql.JsonWriter;
-import ch.kerbtier.helene.store.sql.SqlStore;
+import ch.kerbtier.pogo.PogoFactory;
+import ch.kerbtier.pogo.hops.HopsPogoFactory;
 import ch.kerbtier.webb.di.InjectSingleton;
 
 @Inject
 public class Models {
-  private EntityMap definition;
-  private SqlStore store;
+  private MapEntity definition;
   
   @InjectSingleton
   private Config config;
   
   @InjectSingleton
   private Modules modules;
+
+  private PogoFactory factory;
+
   
   public Models() {
-    definition = new ImpEntityMap();
+    definition = new ImpMapEntity();
 
     for (Module m : modules) {
       for (Path model : m.getModels()) {
@@ -37,38 +39,19 @@ public class Models {
     }
 
     try {
-      String url = "jdbc:h2:file:" + config.getDbPath("h23c") + ";USER=test;PASSWORD=test;AUTO_SERVER=TRUE";
-
-      store = new SqlStore(definition, "org.h2.Driver", url, config.getDbPath("bin"));
+      String url = "jdbc:h2:file:" + config.getDbPath("h23epi") + ";USER=test;PASSWORD=test;AUTO_SERVER=TRUE";
+      factory = new HopsPogoFactory("org.h2.Driver", url);
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
-  public HNode get(String model) {
-    return (HNode)store.get(model);
+  public Epirus get() {
+    return new EpirusImplementation(definition, factory.create());
   }
 
-  public Store get() {
-    return store;
+  public EpirusObject get(String name) {
+    throw new AssertException();
   }
 
-  public Path writeData() {
-    
-    JsonWriter sql2Json = new JsonWriter(store);
-    
-    Path p = config.getBackupPath("latest.json");
-    try {
-      Files.write(sql2Json.write(), p.toFile(), Charset.forName("UTF-8"));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    
-    
-    return store.writeBackupTo(config.getBackupPath());
-  }
-  
-  public void close() {
-    store.getDb().destroy();
-  }
 }

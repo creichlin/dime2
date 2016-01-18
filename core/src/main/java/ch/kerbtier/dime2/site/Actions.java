@@ -16,8 +16,8 @@ import ch.kerbtier.dime2.Response;
 import ch.kerbtier.dime2.modules.ModuleInfo.Mapping;
 import ch.kerbtier.dime2.modules.Page;
 import ch.kerbtier.dime2.site.renderer.SiteRenderer;
+import ch.kerbtier.epirus.EpirusObject;
 import ch.kerbtier.esdi.Inject;
-import ch.kerbtier.helene.HNode;
 import ch.kerbtier.webb.di.InjectRequest;
 import ch.kerbtier.webb.di.InjectSingleton;
 
@@ -60,7 +60,7 @@ public class Actions {
 
     try {
 
-      HNode model = models.get(mapping.getModel());
+      EpirusObject model = models.get(mapping.getModel());
 
       if (model == null) {
         httpResponse.setStatus(404);
