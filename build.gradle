@@ -1,4 +1,5 @@
 
+
 /*
  * Gets the version name from the latest Git tag of the form V-X.Y where X and Y are version numbers
  */
@@ -13,16 +14,23 @@ def getVersionName = { ->
 }
 
 buildscript {
+  
+  
+  
   repositories {
     maven {
+      mavenCentral()
       url "https://maven.eveoh.nl/content/repositories/releases"
     }
   }
 
   dependencies {
     classpath "nl.eveoh:gradle-aspectj:1.6"
+    classpath "org.lesscss:lesscss:1.7.0.1.1"
   }
 }
+
+import org.lesscss.LessCompiler
 
 allprojects {
 
@@ -94,6 +102,28 @@ dependencies {
   compile project(':core')
 }
 
+
+task lessCompile << {
+  def compiler = new org.lesscss.LessCompiler()
+  
+  File base = file('src/main/webapp')
+  fileTree(dir: base, include: '**/*.css').each {File css ->
+    println "lesscss " + css
+    
+    def rel = base.toURI().relativize(css.toURI()).toString()
+    println rel
+    
+    compiler.compile(css, file("build/less/" + rel + ".precompiled"))
+    
+  }
+}
+
+
+war {
+  dependsOn lessCompile
+  
+  from 'build/less' 
+}
 
 
 gretty {

@@ -1,16 +1,20 @@
 package ch.kerbtier.dime2.admin.actions;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.lesscss.LessCompiler;
 
+import com.google.common.base.Charsets;
+
 import ch.kerbtier.amarillo.Route;
+import ch.kerbtier.dime2.Config;
 import ch.kerbtier.dime2.Response;
 import ch.kerbtier.dime2.admin.AdminRoot;
 import ch.kerbtier.dime2.admin.model.FileInput;
-import ch.kerbtier.dime2.auth.Authentication;
 import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.webb.di.InjectRequest;
 import ch.kerbtier.webb.di.InjectSession;
@@ -33,6 +37,9 @@ public class Static {
   
   @InjectRequest
   private Response response;
+  
+  @InjectSingleton
+  private Config config;
 
   
   @Route(pattern = "admin/(.*\\.js)")
@@ -44,15 +51,30 @@ public class Static {
 
   @Route(pattern = "admin/(.*\\.css)")
   public void processLessCss(String path) {
-    LessCompiler lcc = new LessCompiler();
-    Path cssPath = contextInfo.getLocalPath().resolve("admin").resolve(path);
-    try {
-      response.setContent(lcc.compile(cssPath.toFile()));
-    } catch (Exception e) {
-      System.out.println("Error processing " + path);
-      e.printStackTrace();
-      response.setFile(cssPath);
+    String css = "";
+    
+    if(config.isDevelopment()) {
+      Path cssPath = contextInfo.getLocalPath().resolve("admin").resolve(path);
+      // LessCompiler is rather timeconsuming
+      LessCompiler lcc = new LessCompiler();
+      try {
+        css = lcc.compile(cssPath.toFile());
+      } catch (Exception e) {
+        System.out.println("Error processing " + path);
+        e.printStackTrace();
+        response.setFile(cssPath);
+      }
+    } else {
+      Path cssPath = contextInfo.getLocalPath().resolve("admin").resolve(path + ".precompiled");
+      try {
+        css = com.google.common.io.Files.toString(cssPath.toFile(), Charsets.UTF_8);
+      } catch (IOException e) {
+        System.out.println("Error processing preprocessed " + path);
+        e.printStackTrace();
+      }
     }
+    
+    response.setContent(css);
     response.setContentType("text/css;charset=UTF-8");
   }
   
