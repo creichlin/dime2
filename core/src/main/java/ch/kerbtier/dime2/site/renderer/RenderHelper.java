@@ -5,6 +5,7 @@ import java.io.IOException;
 import ch.kerbtier.dime2.Models;
 import ch.kerbtier.dime2.Modules;
 import ch.kerbtier.dime2.modules.Page;
+import ch.kerbtier.dime2.site.renderer.queries.HNodeResolver;
 import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.helene.HObject;
 import ch.kerbtier.webb.di.InjectSingleton;

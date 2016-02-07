@@ -13,6 +13,7 @@ import com.github.jknack.handlebars.Template;
 
 import ch.kerbtier.dime2.Config;
 import ch.kerbtier.dime2.modules.Page;
+import ch.kerbtier.dime2.site.renderer.queries.HNodeResolver;
 import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.helene.HNode;
 import ch.kerbtier.webb.cssopti.CssOpti;

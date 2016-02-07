@@ -29,6 +29,7 @@ public class SiteRenderer {
     handlebars.registerHelper("link", new LinkHelper());
     handlebars.registerHelper("markdown", new MarkdownHelper());
     handlebars.registerHelper("image", new ImageHelper());
+    handlebars.registerHelper("pdf-link", new PdfHelper());
   }
 
   public void render(Page page, HNode model, PrintWriter writer) {

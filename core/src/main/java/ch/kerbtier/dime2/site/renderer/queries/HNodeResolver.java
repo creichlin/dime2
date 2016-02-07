@@ -1,4 +1,4 @@
-package ch.kerbtier.dime2.site.renderer;
+package ch.kerbtier.dime2.site.renderer.queries;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,8 +9,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import ch.kerbtier.dime2.Models;
-import ch.kerbtier.dime2.site.renderer.queries.Published;
-import ch.kerbtier.dime2.site.renderer.queries.Query;
 import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.helene.HList;
 import ch.kerbtier.helene.HObject;
@@ -22,16 +20,16 @@ import com.github.jknack.handlebars.ValueResolver;
 
 @Inject
 public class HNodeResolver implements ValueResolver {
-  public static HNodeResolver INSTANCE = new HNodeResolver();
+  public static final HNodeResolver INSTANCE = new HNodeResolver();
 
-  private static Map<String, Query> QUERIES = new HashMap<>();
-  static {
-    QUERIES.put("published", new Published());
-  }
-  
   @InjectSingleton
   private Models models;
 
+  
+  public HNodeResolver() {
+    Queries.add("published", new Published());
+  }
+  
   @Override
   public Object resolve(final Object context, final String name) {
     // in all templates, $ resolves to root model node
@@ -41,12 +39,18 @@ public class HNodeResolver implements ValueResolver {
 
     // if we have [LIST].foo we want to apply foo transformation to the list
     if (context instanceof HList) {
-      List<Object> elements = new ArrayList<>();
-      for (Object x : ((HList) context)) {
-        elements.add(x);
+      
+      if(Queries.contains(name)) {
+        List<Object> elements = new ArrayList<>();
+        for (Object x : ((HList) context)) {
+          elements.add(x);
+        }
+        Queries.get(name).transform(elements);
+        return elements;
+      } else {
+        System.out.println("no list query named " + name + " found");
+        return Collections.EMPTY_LIST;
       }
-      QUERIES.get(name).transform(elements);
-      return elements;
     }
 
     if (context instanceof HObject) {
@@ -55,10 +59,10 @@ public class HNodeResolver implements ValueResolver {
         return transform(((HObject) context).get(name));
       } catch (UndefinedFieldException e) {
         // no foo attribute, check if we have foo transformation and if it allows the current object.
-        if (QUERIES.get(name) != null && QUERIES.get(name).valid((HObject) context)) {
+        if (Queries.get(name) != null && Queries.get(name).valid((HObject) context)) {
           return context;
         } else {
-          return null;
+          return null; // null so no more resolvers can have a chance to display it
         }
       }
     }

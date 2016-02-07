@@ -24,7 +24,7 @@ import ch.kerbtier.webb.di.InjectSingleton;
 @Inject
 public class Actions {
 
-  private static int CACHE_SECONDS = 60 * 60 * 24 * 356;
+  private static int HTTP_CACHE_SECONDS = 60 * 60 * 24 * 356;
 
   @InjectSingleton
   private Modules modules;
@@ -123,9 +123,9 @@ public class Actions {
     response.setFile(config.getImageCache(name + ".png"));
     response.setContentType("image/png");
 
-    long expiry = new Date().getTime() + CACHE_SECONDS * 1000;
+    long expiry = new Date().getTime() + HTTP_CACHE_SECONDS * 1000;
     httpResponse.setDateHeader("Expires", expiry);
-    httpResponse.setHeader("Cache-Control", "max-age=" + CACHE_SECONDS);
+    httpResponse.setHeader("Cache-Control", "max-age=" + HTTP_CACHE_SECONDS);
   }
 
   @Route(pattern = "ic/([A-Za-z0-9_/-]*)\\.jpeg")
@@ -133,9 +133,9 @@ public class Actions {
     response.setFile(config.getImageCache(name + ".jpeg"));
     response.setContentType("image/jpeg");
 
-    long expiry = new Date().getTime() + CACHE_SECONDS * 1000;
+    long expiry = new Date().getTime() + HTTP_CACHE_SECONDS * 1000;
     httpResponse.setDateHeader("Expires", expiry);
-    httpResponse.setHeader("Cache-Control", "max-age=" + CACHE_SECONDS);
+    httpResponse.setHeader("Cache-Control", "max-age=" + HTTP_CACHE_SECONDS);
   }
 
   @Route(pattern = "ic/([A-Za-z0-9_/-]*)\\.css")
@@ -143,9 +143,19 @@ public class Actions {
     response.setFile(config.getImageCache(name + ".css"));
     response.setContentType("text/css");
 
-    long expiry = new Date().getTime() + CACHE_SECONDS * 1000;
+    long expiry = new Date().getTime() + HTTP_CACHE_SECONDS * 1000;
     httpResponse.setDateHeader("Expires", expiry);
-    httpResponse.setHeader("Cache-Control", "max-age=" + CACHE_SECONDS);
+    httpResponse.setHeader("Cache-Control", "max-age=" + HTTP_CACHE_SECONDS);
+  }
+
+  @Route(pattern = "ic/([A-Za-z0-9_-]*)/[A-Za-z0-9_-]*\\.pdf")
+  public void processCachedPdf(String name) {
+    response.setFile(config.getImageCache(name + ".pdf"));
+    response.setContentType("application/pdf");
+
+    long expiry = new Date().getTime() + HTTP_CACHE_SECONDS * 1000;
+    httpResponse.setDateHeader("Expires", expiry);
+    httpResponse.setHeader("Cache-Control", "max-age=" + HTTP_CACHE_SECONDS);
   }
 
   @Route(pattern = "modules/(.*?)\\.png")
