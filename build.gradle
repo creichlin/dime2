@@ -108,13 +108,8 @@ task lessCompile << {
   
   File base = file('src/main/webapp')
   fileTree(dir: base, include: '**/*.css').each {File css ->
-    println "lesscss " + css
-    
     def rel = base.toURI().relativize(css.toURI()).toString()
-    println rel
-    
     compiler.compile(css, file("build/less/" + rel + ".precompiled"))
-    
   }
 }
 

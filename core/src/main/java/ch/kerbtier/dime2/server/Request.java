@@ -106,7 +106,7 @@ public class Request {
     } else if (response.getJson() != null) {
       Gson gson = new Gson();
       try {
-        httpResponse.setContentType("application/json");
+        httpResponse.setContentType("application/json; charset=UTF-8");
         PrintWriter os = httpResponse.getWriter();
         gson.toJson(response.getJson(), os);
         os.flush();
