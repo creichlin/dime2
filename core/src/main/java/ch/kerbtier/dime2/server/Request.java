@@ -2,12 +2,14 @@ package ch.kerbtier.dime2.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
@@ -36,6 +38,9 @@ public class Request {
   
   @InjectRequest
   private HttpServletResponse httpResponse;
+
+  @InjectRequest
+  private HttpServletRequest httpRequest;
   
   @InjectRequest
   private Response response;
@@ -46,6 +51,17 @@ public class Request {
   
 
   public void run() {
+    // use UTF-8 encoding as default if no other encoding is set by the request header
+    if(httpRequest.getCharacterEncoding() == null ){
+      try {
+        httpRequest.setCharacterEncoding("UTF-8");
+      } catch (UnsupportedEncodingException e) {
+        throw new AssertionError(e);
+      }
+    }
+    
+    
+    
     List<Call> calls = router.findAll(httpInfo.getPath(), Verb.valueOf(httpInfo.getMethod().toString()));
 
     httpResponse.setHeader("Server", "Apache");

@@ -118,6 +118,18 @@ public class Actions {
     response.setContentType("text/css;charset=UTF-8");
   }
 
+  @Route(pattern = "modules/(.*?)\\.png")
+  public void normalImage(String name) {
+    response.setFile(config.getModulesPath(name + ".png"));
+    response.setContentType("image/png");
+  }
+
+  @Route(pattern = "modules/(.*?)\\.jpeg")
+  public void normalJpeg(String name) {
+    response.setFile(config.getModulesPath(name + ".jpeg"));
+    response.setContentType("image/jpeg");
+  }
+
   @Route(pattern = "ic/([A-Za-z0-9_/-]*)\\.png")
   public void processImage(String name) {
     response.setFile(config.getImageCache(name + ".png"));
@@ -156,11 +168,5 @@ public class Actions {
     long expiry = new Date().getTime() + HTTP_CACHE_SECONDS * 1000;
     httpResponse.setDateHeader("Expires", expiry);
     httpResponse.setHeader("Cache-Control", "max-age=" + HTTP_CACHE_SECONDS);
-  }
-
-  @Route(pattern = "modules/(.*?)\\.png")
-  public void normalImage(String name) {
-    response.setFile(config.getModulesPath(name + ".png"));
-    response.setContentType("image/png");
   }
 }

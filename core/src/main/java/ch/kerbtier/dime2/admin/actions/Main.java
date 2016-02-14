@@ -62,6 +62,7 @@ public class Main {
   public void main() {
     
     try {
+      httpResponse.setContentType("text/html; charset=UTF-8");;
       PrintWriter pw = httpResponse.getWriter();
 
       if (adminRoot.getUser() == null) {
