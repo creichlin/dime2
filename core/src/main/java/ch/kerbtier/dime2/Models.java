@@ -55,6 +55,13 @@ public class Models {
 
   public Path writeData() {
     
+    // writeJson();
+    
+    
+    return store.writeBackupTo(config.getBackupPath());
+  }
+
+  private void writeJson() {
     JsonWriter sql2Json = new JsonWriter(store);
     
     Path p = config.getBackupPath("latest.json");
@@ -63,9 +70,6 @@ public class Models {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    
-    
-    return store.writeBackupTo(config.getBackupPath());
   }
   
   public void close() {
