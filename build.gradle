@@ -66,6 +66,7 @@ allprojects {
       exclude module: 'js'
     }
     
+    compile 'ch.kerbtier.fid:fid:0.1.+'
     compile 'ch.kerbtier.helene:helene:0.2.+'
     compile 'ch.kerbtier.amarillo:amarillo:0.1.+'
     compile 'org.pegdown:pegdown:1.5.0'

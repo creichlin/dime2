@@ -16,6 +16,8 @@ import ch.kerbtier.dime2.Response;
 import ch.kerbtier.dime2.admin.AdminRoot;
 import ch.kerbtier.dime2.admin.model.FileInput;
 import ch.kerbtier.esdi.Inject;
+import ch.kerbtier.fid.FidProbe;
+import ch.kerbtier.fid.Info;
 import ch.kerbtier.webb.di.InjectRequest;
 import ch.kerbtier.webb.di.InjectSession;
 import ch.kerbtier.webb.di.InjectSingleton;
@@ -24,24 +26,22 @@ import ch.kerbtier.webb.util.ContextInfo;
 
 @Inject
 public class Static {
-  
-  
+
   @InjectSession
   private AdminRoot adminRoot;
-  
+
   @InjectSingleton
   private ContextInfo contextInfo;
-  
+
   @InjectSingleton
   private ImageTransformer imageTransformer;
-  
+
   @InjectRequest
   private Response response;
-  
+
   @InjectSingleton
   private Config config;
 
-  
   @Route(pattern = "admin/(.*\\.js)")
   public void processJs(String path) {
     Path jsPath = contextInfo.getLocalPath().resolve("admin").resolve(path);
@@ -52,8 +52,8 @@ public class Static {
   @Route(pattern = "admin/(.*\\.css)")
   public void processLessCss(String path) {
     String css = "";
-    
-    if(config.isDevelopment()) {
+
+    if (config.isDevelopment()) {
       Path cssPath = contextInfo.getLocalPath().resolve("admin").resolve(path);
       // LessCompiler is rather timeconsuming
       LessCompiler lcc = new LessCompiler();
@@ -73,24 +73,47 @@ public class Static {
         e.printStackTrace();
       }
     }
-    
+
     response.setContent(css);
     response.setContentType("text/css;charset=UTF-8");
   }
-  
+
   @Route(pattern = "admin/(.*\\.png)")
   public void processPng(String path) {
     Path pngPath = contextInfo.getLocalPath().resolve("admin").resolve(path);
     response.setFile(pngPath);
     response.setContentType("image/png");
   }
-  
-  @Route(pattern="admin/image/(-?[0-9]+)/(.*?)/.*")
-  public void serveModelImage(long mid, String code) {
-    FileInput i = (FileInput)adminRoot.getRoot().getQueue().get(mid);
-    ByteBuffer data = i.getData();
-    BufferedImage bi = imageTransformer.transform(data, code);
-    response.setImage(bi);
-  }
 
+  @Route(pattern = "admin/image/(-?[0-9]+)/(.*?)/.*")
+  public void serveModelImage(long mid, String code) {
+    FileInput i = (FileInput) adminRoot.getRoot().getQueue().get(mid);
+    ByteBuffer data = i.getData();
+
+    if (data != null) {
+      try {
+        System.out.println("lalalaa");
+        BufferedImage bi = imageTransformer.transform(data, code);
+
+        if (bi == null) {
+          // this should not happen but exception is printed and null returned
+          // in tarnsformer
+          
+          byte[] testData = new byte[20];
+          data.clear();
+          data.get(testData);
+          Info info = FidProbe.forData(testData);
+          response.setImage(info.getIconAsImage());
+        } else {
+          response.setImage(bi);
+        }
+      } catch (Exception e) {
+        byte[] testData = new byte[20];
+        data.clear();
+        data.get(testData);
+        Info info = FidProbe.forData(testData);
+        response.setImage(info.getIconAsImage());
+      }
+    }
+  }
 }

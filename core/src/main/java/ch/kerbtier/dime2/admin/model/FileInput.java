@@ -7,15 +7,25 @@ import java.util.regex.Pattern;
 import org.parboiled.common.Base64;
 
 import ch.kerbtier.dime2.admin.model.form.FormEntity;
+import ch.kerbtier.esdi.Inject;
 import ch.kerbtier.helene.HBlob;
+import ch.kerbtier.webb.di.InjectSingleton;
+import ch.kerbtier.webb.util.ContextInfo;
 
+@Inject
 public class FileInput extends FormElement {
+  
+  @InjectSingleton
+  private ContextInfo contextInfo;
 
   @ADHS
   private String url;
   
   @ADHS
   private String previewURL = null;
+  
+  @ADHS
+  private String extension = null;
   
   private ByteBuffer data;
 
@@ -46,7 +56,7 @@ public class FileInput extends FormElement {
 
   public void setData(ByteBuffer data) {
     this.data = data;
-    this.url = "/admin/image/" + getId();
+    this.url = contextInfo.getPath() + "/admin/image/" + getId();
   }
 
   public ByteBuffer getData() {
