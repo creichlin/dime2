@@ -5,3 +5,8 @@
 
 /db/
 /ic/
+
+/core/.classpath
+/core/.gitignore
+/core/.settings/
+
