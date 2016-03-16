@@ -47,8 +47,5 @@ public class ButtonFormAction implements Runnable {
     } else {
       throw new RuntimeException();
     }
-    
-
   }
-
 }

@@ -1,8 +1,4 @@
 
-
-/*
- * Gets the version name from the latest Git tag of the form V-X.Y where X and Y are version numbers
- */
 def getVersionName = { ->
   def stdout = new ByteArrayOutputStream()
   exec {
@@ -14,9 +10,6 @@ def getVersionName = { ->
 }
 
 buildscript {
-  
-  
-  
   repositories {
     maven {
       mavenCentral()
@@ -29,8 +22,6 @@ buildscript {
     classpath "org.lesscss:lesscss:1.7.0.1.1"
   }
 }
-
-import org.lesscss.LessCompiler
 
 
 project.ext {
@@ -58,6 +49,25 @@ configurations {
   exclude
 }
 
+dependencies {
+  compile('ch.kerbtier.webb:webb:0.2.+') {
+    exclude group: 'org.apache.ant'
+    exclude group: 'org.eclipse.jetty'
+    exclude module: 'js'
+  }
+  
+  compile 'ch.kerbtier.fid:fid:0.1.+'
+  compile 'ch.kerbtier.helene:helene:0.2.+'
+  compile 'ch.kerbtier.amarillo:amarillo:0.1.+'
+  compile 'org.pegdown:pegdown:1.5.0'
+  
+  runtime 'com.h2database:h2:1.4.188'
+  
+  aspectpath 'ch.kerbtier.esdi:esdi:0.1.+'
+  
+  testCompile 'org.testng:testng:6.9.6'
+}
+
 test {
   useTestNG()
   
@@ -68,38 +78,27 @@ test {
   maxHeapSize = '8m'
 }
 
+
 jacocoTestReport {
   reports {
     html.enabled true
   }
 }
 
-apply plugin: 'war'
-apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
+
+configurations {
+  providedCompile
+  compile.extendsFrom providedCompile
+}
 
 dependencies {
-  compile project('dime2-core')
+  providedCompile "javax.servlet:servlet-api:2.5"
 }
 
-
-task lessCompile << {
-  def compiler = new org.lesscss.LessCompiler()
-  
-  File base = file('src/main/webapp')
-  fileTree(dir: base, include: '**/*.css').each {File css ->
-    def rel = base.toURI().relativize(css.toURI()).toString()
-    compiler.compile(css, file("build/less/" + rel + ".precompiled"))
+jar {
+  baseName = 'dime2-core'
+  version = version
+  manifest {
+    attributes 'Implementation-Title': 'dime2-core', 'Implementation-Version': version
   }
 }
-
-war {
-  dependsOn lessCompile
-  
-  from 'build/less' 
-}
-
-
-gretty {
-  port = 8004
-}
-

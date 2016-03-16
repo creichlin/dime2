@@ -1,1 +1,3 @@
-include ":core"
+include ':dime2-core'
+project(':dime2-core').projectDir = new File(settingsDir, 'core')
+

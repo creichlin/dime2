@@ -92,21 +92,8 @@ public class Static {
 
     if (data != null) {
       try {
-        System.out.println("lalalaa");
         BufferedImage bi = imageTransformer.transform(data, code);
-
-        if (bi == null) {
-          // this should not happen but exception is printed and null returned
-          // in tarnsformer
-          
-          byte[] testData = new byte[20];
-          data.clear();
-          data.get(testData);
-          Info info = FidProbe.forData(testData);
-          response.setImage(info.getIconAsImage());
-        } else {
-          response.setImage(bi);
-        }
+        response.setImage(bi);
       } catch (Exception e) {
         byte[] testData = new byte[20];
         data.clear();

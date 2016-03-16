@@ -23,6 +23,13 @@ public class Node {
   public Node() {
     id = random.nextInt() >> 1 << 1;
   }
+  
+  public void setId(long id) {
+    if(eventQueue != null) {
+      throw new RuntimeException("cant change id when eventqueue is already set");
+    }
+    this.id = id;
+  }
 
   public long getId() {
     return id;
@@ -51,6 +58,10 @@ public class Node {
     for (Node node : getADHSNodes()) {
       node.setEventQueue(eventQueue);
     }
+  }
+  
+  public Node getNodeById(long id) {
+    return this.eventQueue.get(id);
   }
 
   public void triggerAllEvents() {

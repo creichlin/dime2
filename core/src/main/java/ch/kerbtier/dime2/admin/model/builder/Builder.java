@@ -43,16 +43,16 @@ import ch.kerbtier.webb.di.InjectSingleton;
 
 @Inject
 public class Builder {
-  
+
   @InjectSingleton
   private Views views;
-  
-  @InjectSingleton 
+
+  @InjectSingleton
   private Models models;
-  
+
   @InjectSession
   private AdminRoot adminRoot;
-  
+
   private Logger logger = Logger.getLogger(Builder.class.getCanonicalName());
 
   Stack<Form> forms = new Stack<>();
@@ -71,6 +71,10 @@ public class Builder {
     try {
       Node created = (Node) getClass().getMethod(name, ElementNode.class, HNode.class).invoke(this, en,
           getModel(en, node));
+
+      if (en.getAttribute("id") != null) {
+        created.setId(Long.parseLong(en.getAttribute("id")));
+      }
 
       if (en.getParent() != null && en.getParent().getName().equals("grid")) {
         if (en.getAttribute("span") != null) {
@@ -97,17 +101,14 @@ public class Builder {
   }
 
   public Node entry(ElementNode en, HNode node) {
-    
-    
     MenuItem item;
-    
-    if(en.getParent().getName().equals("entry")) {
+
+    if (en.getParent().getName().equals("entry")) {
       item = new MenuSubItem();
     } else {
       item = new MenuItem();
     }
-    
-    
+
     item.setText(en.getText().trim());
 
     for (final ElementNode setViewNode : en.getElements("setView")) {
@@ -150,8 +151,7 @@ public class Builder {
     String text = new PegDownProcessor().markdownToHtml(en.getText());
     return new Markdown(text);
   }
-  
-  
+
   public Node buttonGroup(final ElementNode en, final HNode node) {
     ButtonGroup buttonGroup = new ButtonGroup();
     for (ElementNode uin : en.getElements()) {
@@ -159,7 +159,6 @@ public class Builder {
     }
     return buttonGroup;
   }
-
 
   public Node button(final ElementNode en, final HNode node) {
     Button button = new Button(en.getText().trim(), en.getAttribute("icon"));
@@ -205,13 +204,18 @@ public class Builder {
     }
 
     for (ElementNode a : en.getElements("form")) {
-      buttonActions.register(new ButtonFormAction(forms.peek(), a.getAttribute("command"), a.getAttribute("message"), a
-          .getAttribute("list")));
+      buttonActions.register(new ButtonFormAction(forms.peek(), a.getAttribute("command"), a.getAttribute("message"),
+          a.getAttribute("list")));
     }
 
     for (ElementNode a : en.getElements("model")) {
-      buttonActions.register(new ButtonModelAction(getModel(en, node), a.getAttribute("command"), a
-          .getAttribute("message")));
+      buttonActions
+          .register(new ButtonModelAction(getModel(en, node), a.getAttribute("command"), a.getAttribute("message")));
+    }
+
+    for (ElementNode a : en.getElements("custom")) {
+      buttonActions.register(new CustomAction(button, a.getAttribute("class"), a.getAttribute("target-id"),
+          a.getAttribute("message")));
     }
 
     return button;
@@ -372,15 +376,14 @@ public class Builder {
     forms.peek().register(ti);
     return ti;
   }
-  
+
   public Node select(ElementNode en, HNode node) {
     Select select = new Select(en.getAttribute("field"));
 
-    
     for (ElementNode uin : en.getElements("option")) {
       select.add(uin.getAttribute("value"), uin.getText());
     }
-    
+
     forms.peek().register(select);
     return select;
   }

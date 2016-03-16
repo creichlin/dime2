@@ -8,6 +8,7 @@ import ch.kerbtier.dime2.Modules;
 import ch.kerbtier.dime2.Response;
 import ch.kerbtier.dime2.Views;
 import ch.kerbtier.dime2.admin.AdminRoot;
+import ch.kerbtier.dime2.admin.ViewModelActions;
 import ch.kerbtier.dime2.admin.actions.Events;
 import ch.kerbtier.dime2.admin.actions.Main;
 import ch.kerbtier.dime2.admin.actions.Static;
@@ -52,6 +53,9 @@ public class StartContext {
     
     Esdi.onRequestFor(SiteRenderer.class).with(InjectSingleton.class).deliver(SiteRenderer.class);
     Esdi.onRequestFor(ImageTransformer.class).with(InjectSingleton.class).deliver(ImageTransformer.class);
+
+    Esdi.onRequestFor(ViewModelActions.class).with(InjectSingleton.class).deliver(ViewModelActions.class);
+
     
     // SessionRegistration
     Esdi.onRequestFor(AdminRoot.class).with(InjectSession.class).deliver(AdminRoot.class);
