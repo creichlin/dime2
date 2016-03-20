@@ -11,15 +11,16 @@ def getVersionName = { ->
 
 buildscript {
   repositories {
+    mavenCentral()
     maven {
-      mavenCentral()
       url "https://maven.eveoh.nl/content/repositories/releases"
     }
+    mavenLocal()
   }
 
   dependencies {
     classpath "nl.eveoh:gradle-aspectj:1.6"
-    classpath "org.lesscss:lesscss:1.7.0.1.1"
+    classpath 'ch.kerbtier.esdi-injector:esdi-injector:0.1.+'
   }
 }
 
@@ -33,6 +34,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven'
 apply plugin: 'jacoco'
 apply plugin: 'aspectj'
+apply plugin: 'kerbtier.esdi'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -62,8 +64,6 @@ dependencies {
   compile 'org.pegdown:pegdown:1.5.0'
   
   runtime 'com.h2database:h2:1.4.188'
-  
-  aspectpath 'ch.kerbtier.esdi:esdi:0.1.+'
   
   testCompile 'org.testng:testng:6.9.6'
 }
