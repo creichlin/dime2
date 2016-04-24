@@ -11,8 +11,6 @@ import ch.kerbtier.webb.Livecycles;
 
 public class Server implements Livecycles {
 
-
-
   @Override
   public void request() {
     new Request().run();

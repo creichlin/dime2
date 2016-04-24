@@ -59,11 +59,18 @@ public class Root extends Node {
       @Override
       public void run() {
         try {
-          Path path = models.writeData();
-            adminRoot.getLog().log("Wrote data to disk " + path);
-          }catch(Exception e) {
-            adminRoot.getLog().log("Failed to write data. " + e.getMessage());
+          adminRoot.getLog().log("Wrote data to disk " + models.writeBackup());
+        }catch(Exception e) {
+          adminRoot.getLog().log("Failed to write data " + e.getMessage());
         }
+        
+        try {
+          models.writeJson();
+          adminRoot.getLog().log("Wrote latest json dump");
+        } catch(Exception e){
+          adminRoot.getLog().log("Failed to write json latest dump " + e.getMessage());
+        }
+        
       }
     });
     

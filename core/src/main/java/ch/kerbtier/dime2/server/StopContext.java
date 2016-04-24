@@ -11,7 +11,7 @@ public class StopContext {
   private Models models;
 
   public void run() {
-    models.writeData();
+    models.writeBackup();
     models.close();
     System.out.println("shutdown");
   }

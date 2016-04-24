@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
@@ -48,7 +49,7 @@ public class Request {
   @InjectSingleton
   private ContextInfo contextInfo;
   
-  
+  private Logger logger = Logger.getLogger(Request.class.getName());
 
   public void run() {
     // use UTF-8 encoding as default if no other encoding is set by the request header
@@ -60,9 +61,15 @@ public class Request {
       }
     }
     
+    Verb verb;
+    try {
+      // only post and get supported, rest is interpreted as get
+      verb = Verb.valueOf(httpInfo.getMethod().toString());
+    } catch(IllegalArgumentException e) {
+      verb = Verb.GET;
+    }
     
-    
-    List<Call> calls = router.findAll(httpInfo.getPath(), Verb.valueOf(httpInfo.getMethod().toString()));
+    List<Call> calls = router.findAll(httpInfo.getPath(), verb);
 
     httpResponse.setHeader("Server", "Apache");
     
@@ -70,17 +77,16 @@ public class Request {
       try {
         calls.get(0).execute();
       } catch (Exception e) {
-        System.out.println("error ocured in action");
-        e.printStackTrace();
+        logger.log(Level.SEVERE, "error in action", e);
         try {
           httpResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } catch (IOException e1) {
-          e1.printStackTrace();
+          logger.log(Level.SEVERE, "error sending error", e1);
         }
         return;
       }
     } else {
-      System.out.println("no action found");
+      logger.info("no action found for request " + httpInfo.getPath());
     }
 
     if (response.getFile() != null) {
@@ -117,7 +123,7 @@ public class Request {
         os.print(response.getContent());
         os.flush();
       } catch (IOException e) {
-        e.printStackTrace();
+        throw new RuntimeException(e);
       }
     } else if (response.getJson() != null) {
       Gson gson = new Gson();
@@ -127,9 +133,10 @@ public class Request {
         gson.toJson(response.getJson(), os);
         os.flush();
       } catch (IOException e) {
-        e.printStackTrace();
+        throw new RuntimeException(e);
       }
     }
   }
-
 }
+
+

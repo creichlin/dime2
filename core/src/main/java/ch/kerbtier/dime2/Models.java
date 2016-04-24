@@ -53,15 +53,11 @@ public class Models {
     return store;
   }
 
-  public Path writeData() {
-    
-    // writeJson();
-    
-    
+  public Path writeBackup() {
     return store.writeBackupTo(config.getBackupPath());
   }
 
-  private void writeJson() {
+  public void writeJson() {
     JsonWriter sql2Json = new JsonWriter(store);
     
     Path p = config.getBackupPath("latest.json");
